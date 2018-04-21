@@ -97,7 +97,7 @@ public class Context {
         logger.trace("Application Instance Created");
         // set values
         this.host = "127.0.0.1";
-        this.databaseName = "ams";
+        this.databaseName = "dbase";
         this.databasePort = "3306";
         this.databaseUser = "root";
         this.databasePass = "root";

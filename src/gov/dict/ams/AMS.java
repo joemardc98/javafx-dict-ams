@@ -84,7 +84,7 @@ public class AMS extends Application {
         primaryStage.setTitle(Context.APPLICATION_NAME);
         primaryStage.getIcons().add(new Image(Context.getResourceStream("drawable/afterschoolcreatives/afterschool-creatives-logo.png")));
         primaryStage.setScene(new Scene(new Login().load()));
-        primaryStage.setResizable(false);
+        primaryStage.setResizable(true);
         primaryStage.setMaximized(true);
         primaryStage.setOnCloseRequest(value -> {
             AMS.onCloseConfirmation(primaryStage);
@@ -97,8 +97,8 @@ public class AMS extends Application {
         Optional<ButtonType> res = PolarisDialog.create(PolarisDialog.Type.CONFIRMATION)
                 .setTitle("Exit")
                 .setOwner(owner)
-                .setHeaderText("Close Application ?")
-                .setContentText("Are you sure you want to close the application ?")
+                .setHeaderText("Close Application")
+                .setContentText("Are you sure you want to close the application?")
                 .showAndWait();
         if (res.get().getText().equals("OK")) {
             logger.trace("Application Exit !");

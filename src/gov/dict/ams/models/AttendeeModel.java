@@ -71,14 +71,14 @@ public class AttendeeModel extends PolarisRecord {
     public final static String LAST_NAME = "last_name";
     public final static String GENDER = "gender";
     public final static String MAIL = "email";
-    public final static String DELETED_AT = "deleted_at";
+    public final static String ACTIVE = "active";
     //==========================================================================
     // 02. Model Fields
     //==========================================================================
     @PrimaryKey
     @FetchOnly
     @Column(ID)
-    private String Id;
+    private Integer Id;
 
     @Column(FIRST_NAME)
     private String firstName;
@@ -95,8 +95,8 @@ public class AttendeeModel extends PolarisRecord {
     @Column(MAIL)
     private String mail;
 
-    @Column(DELETED_AT)
-    private Date deletedAt;
+    @Column(ACTIVE)
+    private Integer active;
 
     //==========================================================================
     // 03. Constructor (Initialize Default Values)
@@ -108,7 +108,7 @@ public class AttendeeModel extends PolarisRecord {
         this.lastName = "";
         this.gender = Gender.UNKNOWN;
         this.mail = "";
-        this.deletedAt = null;
+        this.active = 1;
     }
 
     //==========================================================================
@@ -134,8 +134,8 @@ public class AttendeeModel extends PolarisRecord {
                 .addStatement("FROM")
                 .addStatement(TABLE)
                 .addStatement("WHERE")
-                .addStatement(DELETED_AT)
-                .addStatement("IS NULL");
+                .addStatement(ACTIVE)
+                .addStatement("= 1");
         // Execute Query
         try (ConnectionManager con = Context.app().db().createConnectionManager()) {
             return new AttendeeModel().findMany(con, querySample);
@@ -161,7 +161,7 @@ public class AttendeeModel extends PolarisRecord {
             // open connection
             con = Context.app().db().createConnectionManager();
             //------------------------------------------------------------------
-            model.setDeletedAt(new Date()); // set deleted at with date now
+            model.setActive(0); // set deleted at with date now
             // execute query.
             return model.updateFull(con);
         } finally {
@@ -177,13 +177,13 @@ public class AttendeeModel extends PolarisRecord {
     public String getFullName() {
         return this.getLastName() + ", "
                 + this.getFirstName() + " "
-                + this.getMiddleInitial();
+                + (this.getMiddleInitial() ==null? "" : this.getMiddleInitial());
     }
 
     //==========================================================================
     // 05-A. Getters
     //==========================================================================
-    public String getId() {
+    public Integer getId() {
         return Id;
     }
 
@@ -207,14 +207,14 @@ public class AttendeeModel extends PolarisRecord {
         return mail;
     }
 
-    public Date getDeletedAt() {
-        return deletedAt;
+    public Integer getActive() {
+        return active;
     }
 
     //==========================================================================
     // 05-B. Setters
     //==========================================================================
-    public void setId(String Id) {
+    public void setId(Integer Id) {
         this.Id = Id;
     }
 
@@ -238,8 +238,8 @@ public class AttendeeModel extends PolarisRecord {
         this.mail = mail;
     }
 
-    public void setDeletedAt(Date deletedAt) {
-        this.deletedAt = deletedAt;
+    public void setActive(Integer active) {
+        this.active = active;
     }
 
 }

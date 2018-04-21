@@ -16,68 +16,7 @@
    <children>
       <HBox alignment="CENTER_LEFT" prefHeight="114.0" prefWidth="1200.0" style="-fx-background-color: #BFBCBC;">
          <children>
-            <VBox alignment="CENTER" prefHeight="116.0" prefWidth="91.0" style="-fx-border-width: 3;">
-               <children>
-                  <Label fx:id="lbl_total_no" text="100" textAlignment="CENTER" textFill="#0b408e">
-                     <font>
-                        <Font name="Calibri" size="43.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </Label>
-                  <Label alignment="CENTER" prefHeight="39.0" prefWidth="101.0" text="Total No. of Attendee" textAlignment="CENTER" textFill="#0b408e" wrapText="true">
-                     <font>
-                        <Font name="System Bold" size="13.0" />
-                     </font>
-                  </Label>
-               </children>
-               <HBox.margin>
-                  <Insets bottom="10.0" left="20.0" top="10.0" />
-               </HBox.margin>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </VBox>
-            <VBox alignment="CENTER" layoutX="40.0" layoutY="10.0" prefHeight="128.0" prefWidth="69.0" style="-fx-border-width: 3;">
-               <children>
-                  <VBox alignment="CENTER" prefHeight="59.0" prefWidth="81.0">
-                     <children>
-                        <Label fx:id="lbl_male_count" alignment="CENTER" prefHeight="41.0" prefWidth="59.0" text="50" textAlignment="CENTER" textFill="#0b408e">
-                           <font>
-                              <Font name="Calibri" size="25.0" />
-                           </font>
-                        </Label>
-                        <Label alignment="CENTER" prefHeight="28.0" prefWidth="86.0" text="Male" textAlignment="CENTER" textFill="#0b408e">
-                           <font>
-                              <Font name="Calibri" size="15.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER" layoutX="15.0" layoutY="28.0" prefHeight="59.0" prefWidth="81.0">
-                     <children>
-                        <Label fx:id="lbl_female_count" alignment="CENTER" prefHeight="41.0" prefWidth="59.0" text="50" textAlignment="CENTER" textFill="#0b408e">
-                           <font>
-                              <Font name="Calibri" size="25.0" />
-                           </font>
-                        </Label>
-                        <Label alignment="CENTER" prefHeight="28.0" prefWidth="86.0" text="Female" textAlignment="CENTER" textFill="#0b408e">
-                           <font>
-                              <Font name="Calibri" size="15.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
-               </children>
-               <HBox.margin>
-                  <Insets bottom="10.0" left="10.0" top="10.0" />
-               </HBox.margin>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </VBox>
-            <VBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+            <VBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                <children>
                   <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -86,8 +25,79 @@
                   </ImageView>
                </children>
                <padding>
-                  <Insets right="20.0" />
+                  <Insets left="20.0" />
                </padding>
+            </VBox>
+            <VBox alignment="CENTER" style="-fx-border-color: #0A3F8E; -fx-border-width: 2;">
+               <children>
+                  <Label alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-border-color: #0A3F8E;" text="Status" textAlignment="CENTER" textFill="#0a3f8e" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="116.0" prefWidth="91.0" style="-fx-border-width: 3;">
+                           <children>
+                              <Label fx:id="lbl_total_no" text="100" textAlignment="CENTER" textFill="#0b408e">
+                                 <font>
+                                    <Font name="Calibri" size="43.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Label>
+                              <Label alignment="CENTER" prefHeight="39.0" prefWidth="101.0" text="Total No. of Attendee" textAlignment="CENTER" textFill="#0b408e" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="128.0" prefWidth="69.0" style="-fx-border-width: 3;">
+                           <children>
+                              <VBox alignment="CENTER" prefHeight="59.0" prefWidth="81.0">
+                                 <children>
+                                    <Label fx:id="lbl_male_count" alignment="CENTER" prefHeight="41.0" prefWidth="59.0" text="50" textAlignment="CENTER" textFill="#0b408e">
+                                       <font>
+                                          <Font name="Calibri" size="22.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" prefHeight="28.0" prefWidth="86.0" text="Male" textAlignment="CENTER" textFill="#0b408e">
+                                       <font>
+                                          <Font name="Calibri" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" layoutX="15.0" layoutY="28.0" prefHeight="59.0" prefWidth="81.0">
+                                 <children>
+                                    <Label fx:id="lbl_female_count" alignment="CENTER" prefHeight="41.0" prefWidth="59.0" text="50" textAlignment="CENTER" textFill="#0b408e">
+                                       <font>
+                                          <Font name="Calibri" size="22.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" prefHeight="28.0" prefWidth="86.0" text="Female" textAlignment="CENTER" textFill="#0b408e">
+                                       <font>
+                                          <Font name="Calibri" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin>
             </VBox>
          </children>
       </HBox>
@@ -162,26 +172,26 @@
                   </VBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="41.0" prefWidth="1200.0" spacing="20.0">
                      <children>
-                        <JFXCheckBox text="Select All">
+                        <JFXCheckBox checkedColor="#0b408e" text="Select All">
                            <font>
                               <Font size="17.0" />
                            </font>
                         </JFXCheckBox>
                         <HBox alignment="CENTER_RIGHT" spacing="20.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <JFXButton prefHeight="31.0" prefWidth="133.0" style="-fx-background-color: #0f9d58;" text="Add new" textFill="WHITE">
+                              <JFXButton fx:id="btn_add" prefHeight="31.0" prefWidth="133.0" style="-fx-background-color: #0f9d58;" text="Add new" textFill="WHITE">
                                  <font>
-                                    <Font size="15.0" />
+                                    <Font size="18.0" />
                                  </font>
                               </JFXButton>
-                              <JFXButton prefHeight="31.0" prefWidth="133.0" style="-fx-background-color: #EA1821;" text="Delete" textFill="WHITE">
+                              <JFXButton fx:id="btn_delete" prefHeight="31.0" prefWidth="133.0" style="-fx-background-color: #EA1821;" text="Delete" textFill="WHITE">
                                  <font>
-                                    <Font size="15.0" />
+                                    <Font size="18.0" />
                                  </font>
                               </JFXButton>
-                              <JFXButton prefHeight="31.0" prefWidth="133.0" style="-fx-background-color: #AFB5C9;" text="Print" textFill="WHITE">
+                              <JFXButton prefHeight="39.0" prefWidth="186.0" style="-fx-background-color: #E84B3C;" text="Create Certificate" textFill="WHITE">
                                  <font>
-                                    <Font size="15.0" />
+                                    <Font size="18.0" />
                                  </font>
                               </JFXButton>
                            </children>
