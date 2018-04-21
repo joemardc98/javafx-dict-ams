@@ -1,18 +1,4 @@
-/**
- *
- * MONOSYNC TECHNOLOGIES.
- * MONOSYNC FRAMEWORK VERSION 1.0.0 TEACUP RICE ROLL.
- * THIS PROJECT IS PROPRIETARY AND CONFIDENTIAL ANY PART THEREOF.
- * COPYING AND DISTRIBUTION WITHOUT PERMISSION ARE NOT ALLOWED.
- *
- *
- * OTHER LIBRARIES THAT ARE USED BELONGS TO THEIR RESPECTFUL OWNERS AND AUTHORS.
- * NO COPYRIGHT ARE INTENTIONAL OR INTENDED.
- * THIS PROJECT IS NOT PROFITABLE HENCE FOR EDUCATIONAL PURPOSES ONLY.
- * THIS PROJECT IS ONLY FOR COMPLIANCE TO OUR REQUIREMENTS.
- * THIS PROJECT DOES NOT INCLUDE DISTRIBUTION FOR OTHER PURPOSES.
- *
- */
+
 package gov.dict.ams.ui;
 
 import com.jfoenix.controls.JFXButton;
@@ -46,7 +32,8 @@ public class Login extends ApplicationForm {
     protected void setup() {
         logger.trace("Login View Initialized . . .");
         this.btn_sample.setOnMouseClicked(value -> {
-            this.showInformationMessage("Some Message", "Hello World");
+            //this.showInformationMessage("Some Message", "Hello World");
+            AMS.onCloseConfirmation(this.getStage());
         });
 
         this.btn_login.setOnMouseClicked(value -> {

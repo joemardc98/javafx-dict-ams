@@ -24,13 +24,17 @@
 package gov.dict.ams;
 
 import gov.dict.ams.ui.Login;
+import gov.dict.ams.ui.SplashScreen;
 import java.util.Optional;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.afterschoolcreatives.polaris.javafx.scene.control.PolarisDialog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,10 +50,42 @@ public class AMS extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         logger.trace("Assembling Stage . . .");
+        SplashScreen ss = new SplashScreen();
+        Pane root = ss.load();
+
+        // prepare settings for splash screen
+        Scene splashScene = new Scene(root, 600, 400);
+        Stage splashStage = new Stage();
+        splashStage.initModality(Modality.APPLICATION_MODAL);
+        splashStage.initStyle(StageStyle.UNDECORATED);
+        splashStage.setResizable(false);
+        splashStage.getIcons().add(new Image(Context.getResourceStream("drawable/afterschoolcreatives/afterschool-creatives-logo.png")));
+        splashStage.setScene(splashScene);
+        splashStage.centerOnScreen();
+        splashStage.show();
+
+        Thread splashWaitingThread = new Thread(() -> {
+            try {
+                Thread.sleep(3000); // verify splash screen for 3 seconds
+                Platform.runLater(() -> {
+                    splashStage.close(); // close the splash screen
+                    // display main menu
+                    this.showMain(primaryStage);
+                });
+            } catch (InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
+        });
+        splashWaitingThread.setDaemon(true);
+        splashWaitingThread.start();
+    }
+    
+    private void showMain(Stage primaryStage) {
         primaryStage.setTitle(Context.APPLICATION_NAME);
         primaryStage.getIcons().add(new Image(Context.getResourceStream("drawable/afterschoolcreatives/afterschool-creatives-logo.png")));
         primaryStage.setScene(new Scene(new Login().load()));
         primaryStage.setResizable(false);
+        primaryStage.setMaximized(true);
         primaryStage.setOnCloseRequest(value -> {
             AMS.onCloseConfirmation(primaryStage);
         });

@@ -1,30 +1,13 @@
-/**
- * BSIT 4A-G1.
- * MONOSYNC TECHNOLOGIES.
- * MONOSYNC FRAMEWORK VERSION 1.0.0 TEACUP RICE ROLL.
- * THIS PROJECT IS PROPRIETARY AND CONFIDENTIAL ANY PART THEREOF.
- * COPYING AND DISTRIBUTION WITHOUT PERMISSION ARE NOT ALLOWED.
- *
- *
- * OTHER LIBRARIES THAT ARE USED BELONGS TO THEIR RESPECTFUL OWNERS AND AUTHORS.
- * NO COPYRIGHT ARE INTENTIONAL OR INTENDED.
- * THIS PROJECT IS NOT PROFITABLE HENCE FOR EDUCATIONAL PURPOSES ONLY.
- * THIS PROJECT IS ONLY FOR COMPLIANCE TO OUR REQUIREMENTS.
- * THIS PROJECT DOES NOT INCLUDE DISTRIBUTION FOR OTHER PURPOSES.
- *
- */
+
 package gov.dict.ams.ui.home;
 
 import gov.dict.ams.ApplicationForm;
+import java.awt.GraphicsEnvironment;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
-/**
- *
- * @author Jhon Melvin
- */
 public class SystemHome extends ApplicationForm {
 
     @FXML
@@ -43,14 +26,23 @@ public class SystemHome extends ApplicationForm {
     private ComboBox<Integer> cmb_font_size;
 
     @FXML
-    private ComboBox<String> cmb_paper_size;
-
-    @FXML
     private VBox tbl_attendees;
 
     @Override
     protected void setup() {
-
+        this.setComboBoxes();
     }
 
+    private void setComboBoxes() {
+        String fonts[] = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+        for ( int i = 0; i < fonts.length; i++ ) {
+          this.cmb_font_style.getItems().add(fonts[i]);
+        }
+        this.cmb_font_style.getSelectionModel().select("Calibri");
+        for (int i =5 ; i <= 100; i++) {
+            this.cmb_font_size.getItems().add(i);
+        }
+        this.cmb_font_size.getSelectionModel().select(10);
+    }
+    
 }
