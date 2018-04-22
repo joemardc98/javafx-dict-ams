@@ -177,6 +177,11 @@
                               <Font size="17.0" />
                            </font>
                         </JFXCheckBox>
+                        <JFXCheckBox checkedColor="#0b408e" text="Unselect All">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </JFXCheckBox>
                         <HBox alignment="CENTER_RIGHT" spacing="20.0" HBox.hgrow="ALWAYS">
                            <children>
                               <JFXButton fx:id="btn_add" prefHeight="31.0" prefWidth="133.0" style="-fx-background-color: #0f9d58;" text="Add new" textFill="WHITE">

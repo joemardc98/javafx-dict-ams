@@ -70,7 +70,7 @@ public class AttendeeModel extends PolarisRecord {
     public final static String MIDDLE_INITIAL = "middle_initial";
     public final static String LAST_NAME = "last_name";
     public final static String GENDER = "gender";
-    public final static String MAIL = "email";
+    public final static String EMAIL = "email";
     public final static String ACTIVE = "active";
     //==========================================================================
     // 02. Model Fields
@@ -92,8 +92,8 @@ public class AttendeeModel extends PolarisRecord {
     @Column(GENDER)
     private String gender;
 
-    @Column(MAIL)
-    private String mail;
+    @Column(EMAIL)
+    private String email;
 
     @Column(ACTIVE)
     private Integer active;
@@ -107,7 +107,7 @@ public class AttendeeModel extends PolarisRecord {
         this.middleInitial = "";
         this.lastName = "";
         this.gender = Gender.UNKNOWN;
-        this.mail = "";
+        this.email = "";
         this.active = 1;
     }
 
@@ -203,8 +203,8 @@ public class AttendeeModel extends PolarisRecord {
         return gender;
     }
 
-    public String getMail() {
-        return mail;
+    public String getEmail() {
+        return email;
     }
 
     public Integer getActive() {
@@ -234,8 +234,8 @@ public class AttendeeModel extends PolarisRecord {
         this.gender = gender;
     }
 
-    public void setMail(String mail) {
-        this.mail = mail;
+    public void setEmail(String mail) {
+        this.email = mail;
     }
 
     public void setActive(Integer active) {
