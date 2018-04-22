@@ -125,7 +125,7 @@
                                                 <Font size="21.0" />
                                              </font>
                                           </Label>
-                                          <TextField prefHeight="30.0" prefWidth="309.0" HBox.hgrow="ALWAYS">
+                                          <TextField fx:id="txt_first_name" prefHeight="30.0" prefWidth="309.0" HBox.hgrow="ALWAYS">
                                              <font>
                                                 <Font size="21.0" />
                                              </font>
@@ -144,7 +144,7 @@
                                                 <Font size="21.0" />
                                              </font>
                                           </Label>
-                                          <TextField prefHeight="45.0" prefWidth="371.0" HBox.hgrow="ALWAYS">
+                                          <TextField fx:id="txt_middle_initial" prefHeight="45.0" prefWidth="371.0" HBox.hgrow="ALWAYS">
                                              <font>
                                                 <Font size="21.0" />
                                              </font>
@@ -161,7 +161,7 @@
                                                 <Font size="21.0" />
                                              </font>
                                           </Label>
-                                          <TextField prefHeight="30.0" prefWidth="309.0" HBox.hgrow="ALWAYS">
+                                          <TextField fx:id="txt_last_name" prefHeight="30.0" prefWidth="309.0" HBox.hgrow="ALWAYS">
                                              <font>
                                                 <Font size="21.0" />
                                              </font>
@@ -175,12 +175,12 @@
                                     </HBox>
                                     <HBox>
                                        <children>
-                                          <RadioButton mnemonicParsing="false" prefHeight="30.0" prefWidth="231.0" text="Male">
+                                          <RadioButton fx:id="rbtn_male" mnemonicParsing="false" prefHeight="30.0" prefWidth="231.0" text="Male">
                                              <font>
                                                 <Font size="20.0" />
                                              </font>
                                           </RadioButton>
-                                          <RadioButton mnemonicParsing="false" text="Female">
+                                          <RadioButton fx:id="rbtn_female" mnemonicParsing="false" text="Female">
                                              <font>
                                                 <Font size="20.0" />
                                              </font>
@@ -197,7 +197,7 @@
                                                 <Font size="21.0" />
                                              </font>
                                           </Label>
-                                          <TextField prefHeight="30.0" prefWidth="309.0" HBox.hgrow="ALWAYS">
+                                          <TextField fx:id="txt_email_add" prefHeight="30.0" prefWidth="309.0" HBox.hgrow="ALWAYS">
                                              <font>
                                                 <Font size="21.0" />
                                              </font>
@@ -244,9 +244,9 @@
                                                 <Font size="21.0" />
                                              </font>
                                           </Label>
-                                          <Label layoutX="10.0" layoutY="18.0" maxWidth="1.7976931348623157E308" prefHeight="31.0" prefWidth="140.0" text="1" HBox.hgrow="ALWAYS">
+                                          <Label fx:id="lbl_id" layoutX="10.0" layoutY="18.0" maxWidth="1.7976931348623157E308" prefHeight="31.0" prefWidth="140.0" text="1" HBox.hgrow="ALWAYS">
                                              <font>
-                                                <Font size="21.0" />
+                                                <Font name="System Bold" size="20.0" />
                                              </font>
                                           </Label>
                                        </children>
@@ -258,9 +258,9 @@
                                                 <Font size="21.0" />
                                              </font>
                                           </Label>
-                                          <Label layoutX="10.0" layoutY="18.0" maxWidth="1.7976931348623157E308" prefHeight="31.0" prefWidth="140.0" text="Joemar" HBox.hgrow="ALWAYS">
+                                          <Label fx:id="lbl_first_name" layoutX="10.0" layoutY="18.0" maxWidth="1.7976931348623157E308" prefHeight="31.0" prefWidth="140.0" text="Joemar" HBox.hgrow="ALWAYS">
                                              <font>
-                                                <Font size="21.0" />
+                                                <Font name="System Bold" size="20.0" />
                                              </font>
                                           </Label>
                                        </children>
@@ -272,9 +272,9 @@
                                                 <Font size="21.0" />
                                              </font>
                                           </Label>
-                                          <Label layoutX="10.0" layoutY="18.0" maxWidth="1.7976931348623157E308" prefHeight="31.0" prefWidth="141.0" text="N." HBox.hgrow="ALWAYS">
+                                          <Label fx:id="lbl_middle_initial" layoutX="10.0" layoutY="18.0" maxWidth="1.7976931348623157E308" prefHeight="31.0" prefWidth="141.0" text="N." HBox.hgrow="ALWAYS">
                                              <font>
-                                                <Font size="21.0" />
+                                                <Font name="System Bold" size="20.0" />
                                              </font>
                                           </Label>
                                        </children>
@@ -286,9 +286,9 @@
                                                 <Font size="21.0" />
                                              </font>
                                           </Label>
-                                          <Label layoutX="10.0" layoutY="18.0" maxWidth="1.7976931348623157E308" prefHeight="31.0" prefWidth="141.0" text="De La Cruz" HBox.hgrow="ALWAYS">
+                                          <Label fx:id="lbl_last_name" layoutX="10.0" layoutY="18.0" maxWidth="1.7976931348623157E308" prefHeight="31.0" prefWidth="141.0" text="De La Cruz" HBox.hgrow="ALWAYS">
                                              <font>
-                                                <Font size="21.0" />
+                                                <Font name="System Bold" size="20.0" />
                                              </font>
                                           </Label>
                                        </children>
@@ -300,9 +300,9 @@
                                                 <Font size="21.0" />
                                              </font>
                                           </Label>
-                                          <Label layoutX="10.0" layoutY="18.0" maxWidth="1.7976931348623157E308" prefHeight="31.0" prefWidth="141.0" text="Male" HBox.hgrow="ALWAYS">
+                                          <Label fx:id="lbl_gender" layoutX="10.0" layoutY="18.0" maxWidth="1.7976931348623157E308" prefHeight="31.0" prefWidth="141.0" text="Male" HBox.hgrow="ALWAYS">
                                              <font>
-                                                <Font size="21.0" />
+                                                <Font name="System Bold" size="20.0" />
                                              </font>
                                           </Label>
                                        </children>
@@ -314,16 +314,16 @@
                                                 <Font size="21.0" />
                                              </font>
                                           </Label>
-                                          <Label layoutX="10.0" layoutY="18.0" maxWidth="1.7976931348623157E308" prefHeight="31.0" prefWidth="141.0" text="joemardc98@gmail.com" HBox.hgrow="ALWAYS">
+                                          <Label fx:id="lbl_email_add" layoutX="10.0" layoutY="18.0" maxWidth="1.7976931348623157E308" prefHeight="31.0" prefWidth="141.0" text="joemardc98@gmail.com" HBox.hgrow="ALWAYS">
                                              <font>
-                                                <Font size="21.0" />
+                                                <Font name="System Bold" size="20.0" />
                                              </font>
                                           </Label>
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER" spacing="20.0">
                                        <children>
-                                          <JFXButton prefHeight="39.0" prefWidth="229.0" style="-fx-background-color: #27bf57;" text="Edit" textFill="WHITE">
+                                          <JFXButton fx:id="btn_edit" prefHeight="39.0" prefWidth="229.0" style="-fx-background-color: #27bf57;" text="Edit" textFill="WHITE">
                                              <font>
                                                 <Font size="18.0" />
                                              </font>

@@ -87,6 +87,7 @@ public class AMS extends Application {
         primaryStage.setResizable(true);
         primaryStage.setMaximized(true);
         primaryStage.setOnCloseRequest(value -> {
+            value.consume();
             AMS.onCloseConfirmation(primaryStage);
         });
         primaryStage.show();

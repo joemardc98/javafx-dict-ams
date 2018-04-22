@@ -24,21 +24,21 @@
 package gov.dict.ams.ui.home;
 
 import com.jfoenix.controls.JFXButton;
+import gov.dict.ams.Context;
 import gov.dict.ams.models.AttendeeModel;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
+import org.afterschoolcreatives.polaris.java.sql.ConnectionManager;
 import org.afterschoolcreatives.polaris.javafx.fxml.PolarisFxController;
-import org.afterschoolcreatives.polaris.javafx.scene.control.PolarisDialog;
 
 /**
  *
@@ -56,17 +56,61 @@ public class NewAttendee  extends PolarisFxController  {
     private Label lbl_female_count;
 
     @FXML
+    private TextField txt_first_name;
+
+    @FXML
+    private TextField txt_middle_initial;
+
+    @FXML
+    private TextField txt_last_name;
+
+    @FXML
+    private RadioButton rbtn_male;
+
+    @FXML
+    private RadioButton rbtn_female;
+
+    @FXML
+    private TextField txt_email_add;
+
+    @FXML
     private JFXButton btn_add;
 
     @FXML
     private JFXButton btn_home;
-    
+
     @FXML
     private VBox vbox_newly_added;
+
+    @FXML
+    private Label lbl_id;
+
+    @FXML
+    private Label lbl_first_name;
+
+    @FXML
+    private Label lbl_middle_initial;
+
+    @FXML
+    private Label lbl_last_name;
+
+    @FXML
+    private Label lbl_gender;
+
+    @FXML
+    private Label lbl_email_add;
+
+    @FXML
+    private JFXButton btn_edit;
     
     @Override
     protected void setup() {
         this.vbox_newly_added.setVisible(false);
+        
+        ToggleGroup grp = new ToggleGroup();
+        this.rbtn_female.setToggleGroup(grp);
+        this.rbtn_male.setToggleGroup(grp);
+        this.rbtn_male.setSelected(true);
         
         try {
             this.reloadStatus();
@@ -79,9 +123,39 @@ public class NewAttendee  extends PolarisFxController  {
         });
         
         this.btn_add.setOnMouseClicked((MouseEvent value) -> {
-            this.vbox_newly_added.setVisible(true);
+            AttendeeModel model = new AttendeeModel();
+            model.setEmail(this.txt_email_add.getText());
+            model.setFirstName(this.txt_first_name.getText());
+            model.setGender(this.rbtn_female.isSelected()? "F" : "M");
+            model.setLastName(this.txt_last_name.getText());
+            model.setMiddleInitial(this.txt_middle_initial.getText());
+            boolean res = false;
+            try (ConnectionManager con = Context.app().db().createConnectionManager()) {
+                res = model.insert(con);
+            } catch (SQLException ex) {
+                Logger.getLogger(NewAttendee.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            if(res) {
+                this.lbl_email_add.setText(this.txt_email_add.getText());
+                this.lbl_first_name.setText(this.txt_first_name.getText());
+                this.lbl_gender.setText(this.rbtn_female.isSelected()? "Female" : "Male");
+                this.lbl_id.setText(model.getId() + "");
+                this.lbl_last_name.setText(this.txt_last_name.getText());
+                this.lbl_middle_initial.setText(this.txt_middle_initial.getText());
+                
+                this.txt_email_add.setText("");
+                this.txt_first_name.setText("");
+                this.txt_last_name.setText("");
+                this.txt_middle_initial.setText("");
+                this.rbtn_male.setSelected(true);
+                
+                this.vbox_newly_added.setVisible(true);
+            } else {
+                
+            }
+            
         });
-        
     }
     
     private void reloadStatus() throws SQLException {
