@@ -206,11 +206,11 @@ public class NewAttendee  extends ApplicationForm  {
                 }
             }
             this.lbl_email_add.setText(this.txt_email_add.getText());
-            this.lbl_first_name.setText(this.txt_first_name.getText());
+            this.lbl_first_name.setText(this.txt_first_name.getText().toUpperCase());
             this.lbl_gender.setText(this.rbtn_female.isSelected()? "Female" : "Male");
             this.lbl_id.setText(model.getId() + "");
-            this.lbl_last_name.setText(this.txt_last_name.getText());
-            this.lbl_middle_initial.setText(this.txt_middle_initial.getText());
+            this.lbl_last_name.setText(this.txt_last_name.getText().toUpperCase());
+            this.lbl_middle_initial.setText(this.txt_middle_initial.getText().toUpperCase());
 
             this.txt_email_add.setText("");
             this.txt_first_name.setText("");
@@ -226,10 +226,10 @@ public class NewAttendee  extends ApplicationForm  {
     
     private void setModelValues() {
         model.setEmail(this.txt_email_add.getText());
-        model.setFirstName(this.txt_first_name.getText());
+        model.setFirstName(this.txt_first_name.getText().toUpperCase());
         model.setGender(this.rbtn_female.isSelected()? "F" : "M");
-        model.setLastName(this.txt_last_name.getText());
-        model.setMiddleInitial(this.txt_middle_initial.getText());
+        model.setLastName(this.txt_last_name.getText().toUpperCase());
+        model.setMiddleInitial(this.txt_middle_initial.getText().toUpperCase());
     }
     
     private void reloadStatus() throws SQLException {

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXCheckBox?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
@@ -104,99 +103,94 @@
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                <children>
-                  <HBox alignment="CENTER" prefHeight="64.0" prefWidth="1200.0">
-                     <children>
-                        <HBox alignment="CENTER_RIGHT" prefHeight="54.0" prefWidth="393.0" spacing="5.0" HBox.hgrow="ALWAYS">
-                           <children>
-                              <TextField prefHeight="33.0" prefWidth="341.0" />
-                              <JFXButton prefHeight="32.0" prefWidth="153.0" style="-fx-background-color: #0B408E;" text="Search" textFill="WHITE">
-                                 <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../../../../storage/drawable/icons8-google-web-search-50.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </JFXButton>
-                           </children>
-                           <padding>
-                              <Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
-                           </padding>
-                           <HBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </HBox.margin>
-                        </HBox>
-                        <JFXButton fx:id="btn_open_dir" prefHeight="32.0" prefWidth="186.0" style="-fx-background-color: #0B408E;" text="Open certificate's folder" textFill="WHITE">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </JFXButton>
-                     </children>
-                     <padding>
-                        <Insets left="20.0" right="20.0" />
-                     </padding>
-                  </HBox>
-                  <VBox fx:id="tbl_attendees" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
+                  <HBox VBox.vgrow="ALWAYS">
                      <VBox.margin>
                         <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                      </VBox.margin>
-                  </VBox>
-                  <HBox spacing="10.0">
                      <children>
-                        <Label text="Total Selected:" />
-                        <Label fx:id="lbl_total_selected" text="1/100" />
-                     </children>
-                     <VBox.margin>
-                        <Insets left="35.0" />
-                     </VBox.margin>
-                  </HBox>
-                  <HBox alignment="CENTER_LEFT" prefHeight="41.0" prefWidth="1200.0" spacing="20.0">
-                     <children>
-                        <JFXCheckBox fx:id="chkbx_select_all" checkedColor="#0b408e" text="Select All">
-                           <font>
-                              <Font size="17.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets left="5.0" />
-                           </HBox.margin>
-                        </JFXCheckBox>
-                        <HBox alignment="CENTER_RIGHT" spacing="20.0" HBox.hgrow="ALWAYS">
+                        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <JFXButton fx:id="btn_add" prefHeight="31.0" prefWidth="133.0" style="-fx-background-color: #0f9d58;" text="Add new" textFill="WHITE">
+                              <Label maxWidth="1.7976931348623157E308" text="Production Information" VBox.vgrow="ALWAYS">
+                                 <font>
+                                    <Font name="System Bold" size="30.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" prefHeight="94.0" prefWidth="533.0" text="This process will create certificate based on the saved template and selected names in the previous table." wrapText="true" VBox.vgrow="ALWAYS">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
-                              </JFXButton>
-                              <JFXButton fx:id="btn_delete" prefHeight="31.0" prefWidth="133.0" style="-fx-background-color: #EA1821;" text="Delete" textFill="WHITE">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </JFXButton>
-                              <JFXButton fx:id="btn_generate" prefHeight="39.0" prefWidth="186.0" style="-fx-background-color: #E84B3C;" text="Generate Certificate" textFill="WHITE">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </JFXButton>
-                              <JFXButton layoutX="852.0" layoutY="11.0" prefHeight="39.0" prefWidth="186.0" style="-fx-background-color: #E84B3C;" text="Export to Excel File" textFill="WHITE">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </JFXButton>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <HBox alignment="CENTER" prefHeight="41.0" prefWidth="659.0" spacing="10.0">
+                                 <children>
+                                    <Label text="Font Style:">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <ComboBox fx:id="cmb_font_style" prefHeight="25.0" prefWidth="310.0" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" layoutX="10.0" layoutY="169.0" prefHeight="41.0" prefWidth="659.0" spacing="10.0">
+                                 <children>
+                                    <Label prefHeight="25.0" prefWidth="270.0" text="Font Size:">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <ComboBox fx:id="cmb_font_size" prefHeight="25.0" prefWidth="114.0" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="65.0" prefWidth="659.0" spacing="10.0">
+                                 <children>
+                                    <JFXButton fx:id="btn_proceed" prefHeight="39.0" prefWidth="185.0" style="-fx-background-color: #0f9d58;" text="Proceed" textFill="WHITE">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </JFXButton>
+                                    <JFXButton fx:id="btn_cancel" layoutX="247.0" layoutY="23.0" prefHeight="39.0" prefWidth="185.0" style="-fx-background-color: #E52025;" text="Cancel" textFill="WHITE">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </JFXButton>
+                                 </children>
+                              </HBox>
                            </children>
                            <padding>
-                              <Insets right="20.0" />
+                              <Insets right="50.0" />
                            </padding>
-                        </HBox>
+                        </VBox>
+                        <VBox>
+                           <children>
+                              <Label maxWidth="1.7976931348623157E308" text="Selected Attendee/s">
+                                 <font>
+                                    <Font name="System Bold" size="23.0" />
+                                 </font>
+                              </Label>
+                              <VBox fx:id="tbl_attendees" prefHeight="490.0" prefWidth="557.0">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" right="20.0" top="10.0" />
+                                 </VBox.margin>
+                              </VBox>
+                              <HBox spacing="10.0">
+                                 <children>
+                                    <Label text="Total Selected:">
+                                       <font>
+                                          <Font size="17.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="lbl_total_selected" text="100">
+                                       <font>
+                                          <Font size="17.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
                      </children>
-                     <padding>
-                        <Insets left="20.0" />
-                     </padding>
-                     <VBox.margin>
-                        <Insets bottom="10.0" />
-                     </VBox.margin>
                   </HBox>
                </children>
             </VBox>

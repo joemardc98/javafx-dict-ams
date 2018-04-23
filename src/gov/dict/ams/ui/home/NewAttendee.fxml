@@ -46,7 +46,7 @@
                                     <Insets />
                                  </VBox.margin>
                               </Label>
-                              <Label alignment="CENTER" prefHeight="39.0" prefWidth="101.0" text="Total No. of Attendee" textAlignment="CENTER" textFill="#0b408e" wrapText="true">
+                              <Label alignment="CENTER" prefHeight="39.0" prefWidth="101.0" text="Total No. of Attendee/s" textAlignment="CENTER" textFill="#0b408e" wrapText="true">
                                  <font>
                                     <Font name="System Bold" size="13.0" />
                                  </font>

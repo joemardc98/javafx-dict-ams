@@ -24,7 +24,7 @@
          <font>
             <Font size="15.0" />
          </font></Label>
-      <Label fx:id="lbl_id" layoutX="15.0" layoutY="29.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="78.0" prefWidth="54.0" text="1" textFill="#505050">
+      <Label fx:id="lbl_id" layoutX="15.0" layoutY="29.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="78.0" prefWidth="156.0" text="1" textFill="#505050">
          <font>
             <Font name="System Bold" size="18.0" />
          </font></Label>

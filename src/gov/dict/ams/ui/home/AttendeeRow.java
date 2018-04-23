@@ -26,13 +26,13 @@ package gov.dict.ams.ui.home;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import gov.dict.ams.models.AttendeeModel;
-import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javax.swing.event.ChangeListener;
 import org.afterschoolcreatives.polaris.javafx.fxml.PolarisFxController;
 import org.afterschoolcreatives.polaris.javafx.scene.control.simpletable.SimpleTableRow;
 
@@ -60,29 +60,50 @@ public class AttendeeRow extends PolarisFxController {
     @FXML
     private JFXButton btn_edit;
     
-    private String fullname, email, id;
     private Image gender;
     private AttendeeModel content;
     private boolean isChkbxSelected = false;
     private SimpleTableRow row;
+    private JFXButton btn_add_new;
     @Override
     protected void setup() {
-        this.lbl_email.setText(email);
-        this.lbl_full_name.setText(fullname);
-        this.lbl_id.setText(id);
+        this.lbl_email.setText(content.getEmail()==null? "No Email Address Found" : content.getEmail());
+        this.lbl_full_name.setText(content.getFullName());
+        this.lbl_id.setText(content.getId() + "");
         this.imgvw_gender.setImage(gender);
         this.btn_edit.setOnMouseClicked((MouseEvent value)->{
-            NewAttendee edit = new NewAttendee();
-            edit.setEditMode(content);
-            this.changeRoot(edit.load());
+            this.editInfo();
         });
         this.chkbx_selected.selectedProperty().addListener((a)->{
             this.isChkbxSelected = this.chkbx_selected.isSelected();
+            if(btn_add_new != null) {
+                this.btn_add_new.setDisable(this.isChkbxSelected);
+            }
         });
-        this.row.setOnMouseClicked((MouseEvent value)->{
-            this.isChkbxSelected = !this.chkbx_selected.isSelected();
-            this.chkbx_selected.setSelected(this.isChkbxSelected);
+        this.row.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(event.getButton().equals(MouseButton.PRIMARY)){
+                    if(event.getClickCount() == 2){
+                        System.out.println("Double clicked");
+                        editInfo();
+                    } else {
+                        isChkbxSelected = !chkbx_selected.isSelected();
+                        chkbx_selected.setSelected(isChkbxSelected);
+                    }
+                }
+            }
         });
+    }
+    
+    private void editInfo() {
+        NewAttendee edit = new NewAttendee();
+        edit.setEditMode(content);
+        this.changeRoot(edit.load());
+    }
+
+    public void setBtn_add_new(JFXButton btn_add_new) {
+        this.btn_add_new = btn_add_new;
     }
 
     public void setIsChkbxSelected(boolean isChkbxSelected) {
@@ -101,19 +122,7 @@ public class AttendeeRow extends PolarisFxController {
     public void setContent(AttendeeModel content) {
         this.content = content;
     }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
+    
     public void setGender(Image gender) {
         this.gender = gender;
     }

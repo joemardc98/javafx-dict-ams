@@ -179,6 +179,10 @@ public class AttendeeModel extends PolarisRecord {
                 + this.getFirstName() + " "
                 + (this.getMiddleInitial() ==null? "" : this.getMiddleInitial());
     }
+    
+    public String getFullName2() {
+        return this.getFirstName() + (this.getMiddleInitial() ==null? "" : " " + this.getMiddleInitial()) + " " + this.getLastName();
+    }
 
     //==========================================================================
     // 05-A. Getters

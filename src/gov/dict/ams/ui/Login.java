@@ -2,9 +2,12 @@
 package gov.dict.ams.ui;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXProgressBar;
 import gov.dict.ams.AMS;
 import gov.dict.ams.ApplicationForm;
 import gov.dict.ams.ui.home.SystemHome;
+import java.util.logging.Level;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +24,10 @@ public class Login extends ApplicationForm {
 
     @FXML
     private JFXButton btn_login;
+    
+    @FXML
+    private JFXProgressBar prgbr_loading;
+
 
     public Login() {
         logger.trace("Login Object Created . . .");
@@ -30,6 +37,7 @@ public class Login extends ApplicationForm {
 
     @Override
     protected void setup() {
+        this.prgbr_loading.setVisible(false);
         logger.trace("Login View Initialized . . .");
         this.btn_sample.setOnMouseClicked(value -> {
             //this.showInformationMessage("Some Message", "Hello World");
@@ -37,7 +45,19 @@ public class Login extends ApplicationForm {
         });
 
         this.btn_login.setOnMouseClicked(value -> {
-            this.changeRoot(new SystemHome().load());
+            this.prgbr_loading.setVisible(true);
+            Thread threadLoad = new Thread(()->{
+                try {
+                    Thread.sleep(3000);
+                    Platform.runLater(()->{
+                        this.changeRoot(new SystemHome().load());
+                    });
+                } catch (InterruptedException ex) {
+                    java.util.logging.Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+            threadLoad.setDaemon(true);
+            threadLoad.start();
         });
     }
 
