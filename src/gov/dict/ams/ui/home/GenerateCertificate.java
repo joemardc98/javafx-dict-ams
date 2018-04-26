@@ -50,14 +50,13 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import static javax.management.Query.value;
 import org.afterschoolcreatives.polaris.java.io.FileTool;
-import org.afterschoolcreatives.polaris.javafx.fxml.PolarisFxController;
 import org.afterschoolcreatives.polaris.javafx.scene.control.PolarisDialog;
 import org.afterschoolcreatives.polaris.javafx.scene.control.simpletable.SimpleTable;
 import org.afterschoolcreatives.polaris.javafx.scene.control.simpletable.SimpleTableCell;
@@ -97,10 +96,14 @@ public class GenerateCertificate extends ApplicationForm {
     @FXML
     private Label lbl_total_selected;
     
+    @FXML
+    private TextField txt_spacing;
+    
     private ArrayList<AttendeeModel> selectedModels;
     private SimpleTable tableAttendee = new SimpleTable();
     @Override
     protected void setup() {
+        this.txt_spacing.setText("10");
         
         for (int i = 5; i <= 100; i++) {
             this.cmb_font_size.getItems().add(i);
@@ -129,17 +132,23 @@ public class GenerateCertificate extends ApplicationForm {
         });
         
         this.btn_proceed.setOnMouseClicked((MouseEvent value) -> {
-            this.generateCert(value);
+            try {
+                spaceBefore = Integer.valueOf(this.txt_spacing.getText()); 
+                this.generateCert(value);
+            } catch (NumberFormatException e) {
+                this.showWarningMessage("Invalid Spacing", "Please provide an integer value for spacing before.");
+            }
         });
         
     }
     
+    private Integer spaceBefore = 10; 
     private void generateCert(MouseEvent value) {
         Thread generateCert = new Thread(()->{
             int ctrCount = 0;
             for(AttendeeModel eachModel: this.selectedModels) {
                 try {
-                    if (this.stampCertificate(eachModel)) {
+                    if (this.generateCertificate(eachModel)) {
                         ctrCount++;
                         if(this.selectedModels.size() == ctrCount) {
                             Platform.runLater(()->{
@@ -154,7 +163,10 @@ public class GenerateCertificate extends ApplicationForm {
                         break;
                     }
                 } catch (DocumentException | IOException e) {
-                    PolarisDialog.exceptionDialog(e);
+                    Platform.runLater(()->{
+                        this.showWarningMessage("No Template Found","Please proceed to Extras then upload a template to proceed.");
+                    });
+                    break;
                 }
                 value.consume();
             }
@@ -180,7 +192,7 @@ public class GenerateCertificate extends ApplicationForm {
      * @throws java.io.FileNotFoundException if some of the required directories
      * or files is not existing.
      */
-    private  boolean stampCertificate(AttendeeModel eachModel)
+    private  boolean generateCertificate(AttendeeModel eachModel)
             throws DocumentException, FileNotFoundException, IOException {
         /**
          * Attempt to check the template directory.
@@ -219,18 +231,10 @@ public class GenerateCertificate extends ApplicationForm {
             
             PdfImportedPage page = writer.getImportedPage(reader, 1); 
             
-//            document.newPage();
             cb.addTemplate(page, 0, 0);
-            cb.getPdfDocument().add(new Paragraph(" "));
-            cb.getPdfDocument().add(new Paragraph(" "));
-            cb.getPdfDocument().add(new Paragraph(" "));
-            cb.getPdfDocument().add(new Paragraph(" "));
-            cb.getPdfDocument().add(new Paragraph(" "));
-            cb.getPdfDocument().add(new Paragraph(" "));
-            cb.getPdfDocument().add(new Paragraph(" "));
-            cb.getPdfDocument().add(new Paragraph(" "));
-            cb.getPdfDocument().add(new Paragraph(" "));
-            cb.getPdfDocument().add(new Paragraph(" "));
+            for (int i = 0; i < spaceBefore; i++) {
+                cb.getPdfDocument().add(new Paragraph(" "));
+            }
             
             Paragraph text = new Paragraph(50);
             text.setAlignment(Element.ALIGN_CENTER);
@@ -260,7 +264,7 @@ public class GenerateCertificate extends ApplicationForm {
         this.maleCount = 0;
         this.femaleCount = 0;
         this.tableAttendee.getChildren().clear();
-        List<AttendeeModel> content = AttendeeModel.listAllActive();
+        List<AttendeeModel> content = AttendeeModel.listAllActive(null);
         for(AttendeeModel each: content) {
             if(each.getGender() != null) {
                 if(each.getGender().equalsIgnoreCase("M")) {

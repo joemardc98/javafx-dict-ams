@@ -126,16 +126,28 @@ public class AttendeeModel extends PolarisRecord {
     //==========================================================================
     // 04-B. Static Class Methods
     //==========================================================================
-    public static <T> List<T> listAllActive() throws SQLException {
+    public static <T> List<T> listAllActive(String genderSelected) throws SQLException {
         // Build Query
         SimpleQuery querySample = new SimpleQuery();
-        querySample.addStatement("SELECT")
-                .addStatement("*")
-                .addStatement("FROM")
-                .addStatement(TABLE)
-                .addStatement("WHERE")
-                .addStatement(ACTIVE)
-                .addStatement("= 1");
+        if(genderSelected ==  null) {
+            querySample.addStatement("SELECT")
+                    .addStatement("*")
+                    .addStatement("FROM")
+                    .addStatement(TABLE)
+                    .addStatement("WHERE")
+                    .addStatement(ACTIVE)
+                    .addStatement("= 1");
+        } else {
+            querySample.addStatement("SELECT")
+                    .addStatement("*")
+                    .addStatement("FROM")
+                    .addStatement(TABLE)
+                    .addStatement("WHERE")
+                    .addStatement(GENDER)
+                    .addStatement(" = '" + genderSelected + "' and ")
+                    .addStatement(ACTIVE)
+                    .addStatement(" = 1");
+        }
         // Execute Query
         try (ConnectionManager con = Context.app().db().createConnectionManager()) {
             return new AttendeeModel().findMany(con, querySample);
@@ -170,18 +182,75 @@ public class AttendeeModel extends PolarisRecord {
             }
         }
     }
-
+   public static <T> List<T> searchAttendee(String keyTag) throws SQLException {
+        String[] explodedKey = keyTag.split(" ");
+        String tempQuery = "";
+        if(explodedKey.length != 1) {
+            for (String eachWord : explodedKey) {
+                if(!tempQuery.equals("")) {
+                    tempQuery += " or";
+                }
+                tempQuery += " " + LAST_NAME + " like '%" + eachWord + "%' or ";
+                tempQuery += " " + FIRST_NAME + " like '%" + eachWord + "%' or ";
+                tempQuery += " " + MIDDLE_INITIAL + " like '%" + eachWord + "%'";
+            }
+        }
+        System.out.println(tempQuery);
+        // Build Query
+        SimpleQuery querySample = new SimpleQuery();
+        if(tempQuery.equals("")) {
+            querySample.addStatement("SELECT")
+                    .addStatement("*")
+                    .addStatement("FROM")
+                    .addStatement(TABLE)
+                    .addStatement("WHERE")
+                    .addStatement(LAST_NAME)
+                    .addStatement(" like '%" + keyTag + "%' or ")
+                    .addStatement(FIRST_NAME)
+                    .addStatement("like '%" + keyTag + "%' or ")
+                    .addStatement(MIDDLE_INITIAL)
+                    .addStatement("like '%" + keyTag + "%' or ")
+                    .addStatement(EMAIL)
+                    .addStatement("like '%" + keyTag + "%' and ")
+                    .addStatement(ACTIVE)
+                    .addStatement(" = 1");
+        } else {
+            querySample.addStatement("SELECT")
+                    .addStatement("*")
+                    .addStatement("FROM")
+                    .addStatement(TABLE)
+                    .addStatement("WHERE")
+                    .addStatement(tempQuery)
+                    .addStatement(" and " + ACTIVE)
+                    .addStatement(" = 1");
+        }
+        // Execute Query
+        try (ConnectionManager con = Context.app().db().createConnectionManager()) {
+            System.out.println(querySample);
+            return new AttendeeModel().findMany(con, querySample);
+        }
+    }
+   
+   private static String checkIfGender(String keyTag) {
+       if(keyTag.equalsIgnoreCase("MALE")) {
+           return "M";
+       } else if(keyTag.equalsIgnoreCase("FEMALE")) {
+           return "F";
+       }
+       return "";
+   }
+   
     //==========================================================================
     // 04-C. Custom Methods
     //==========================================================================
     public String getFullName() {
         return this.getLastName() + ", "
                 + this.getFirstName() + " "
-                + (this.getMiddleInitial() ==null? "" : this.getMiddleInitial());
+                + this.getMiddleInitial();
     }
     
     public String getFullName2() {
-        return this.getFirstName() + (this.getMiddleInitial() ==null? "" : " " + this.getMiddleInitial()) + " " + this.getLastName();
+        return this.getFirstName() + (!this.getMiddleInitial().isEmpty()? " " + this.getMiddleInitial() : "") + " " + this.getLastName();
     }
 
     //==========================================================================
@@ -196,7 +265,7 @@ public class AttendeeModel extends PolarisRecord {
     }
 
     public String getMiddleInitial() {
-        return middleInitial;
+        return (middleInitial ==null? "" : middleInitial);
     }
 
     public String getLastName() {

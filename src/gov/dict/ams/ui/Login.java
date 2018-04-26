@@ -9,6 +9,7 @@ import gov.dict.ams.ui.home.SystemHome;
 import java.util.logging.Level;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +29,9 @@ public class Login extends ApplicationForm {
     @FXML
     private JFXProgressBar prgbr_loading;
 
+    @FXML
+    private Label lbl_loading;
+
 
     public Login() {
         logger.trace("Login Object Created . . .");
@@ -38,6 +42,7 @@ public class Login extends ApplicationForm {
     @Override
     protected void setup() {
         this.prgbr_loading.setVisible(false);
+        this.lbl_loading.setVisible(false);
         logger.trace("Login View Initialized . . .");
         this.btn_sample.setOnMouseClicked(value -> {
             //this.showInformationMessage("Some Message", "Hello World");
@@ -46,6 +51,7 @@ public class Login extends ApplicationForm {
 
         this.btn_login.setOnMouseClicked(value -> {
             this.prgbr_loading.setVisible(true);
+            this.lbl_loading.setVisible(true);
             Thread threadLoad = new Thread(()->{
                 try {
                     Thread.sleep(3000);

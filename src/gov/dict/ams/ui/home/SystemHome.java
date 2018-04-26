@@ -1,15 +1,6 @@
 
 package gov.dict.ams.ui.home;
 
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfContentByte;
-import com.itextpdf.text.pdf.PdfImportedPage;
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfWriter;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import gov.dict.ams.ApplicationForm;
@@ -17,28 +8,23 @@ import gov.dict.ams.Context;
 import gov.dict.ams.models.AttendeeModel;
 import java.awt.Desktop;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import org.afterschoolcreatives.polaris.java.io.FileTool;
 import org.afterschoolcreatives.polaris.java.sql.ConnectionManager;
-import org.afterschoolcreatives.polaris.javafx.scene.control.PolarisDialog;
 import org.afterschoolcreatives.polaris.javafx.scene.control.simpletable.SimpleTable;
 import org.afterschoolcreatives.polaris.javafx.scene.control.simpletable.SimpleTableCell;
 import org.afterschoolcreatives.polaris.javafx.scene.control.simpletable.SimpleTableRow;
@@ -76,14 +62,34 @@ public class SystemHome extends ApplicationForm {
     @FXML
     private Label lbl_total_selected;
     
+    @FXML
+    private TextField txt_search;
+
+    @FXML
+    private JFXButton btn_search;
+    
+    @FXML
+    private ComboBox<String> cmb_sort;
+    
+    @FXML
+    private JFXButton btn_extras;
+    
+    @FXML
+    private VBox vbox_no_result;
     
     @Override
     protected void setup() {
-        try {
-            this.createTable();
-        } catch (SQLException ex) {
-            Logger.getLogger(SystemHome.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.vbox_no_result.setVisible(false);
+        this.tbl_attendees.setVisible(true);
+        
+        this.refreshTable(null);
+        this.refreshStatus();
+        
+        this.cmb_sort.getItems().add("All");
+        this.cmb_sort.getItems().add("Male");
+        this.cmb_sort.getItems().add("Female");
+        this.cmb_sort.getSelectionModel().selectFirst();
+        
         this.eventHandler();
     }
     
@@ -135,30 +141,88 @@ public class SystemHome extends ApplicationForm {
         this.tbl_attendees.setOnMouseClicked((MouseEvent value) -> {
             this.captureSelectedModel();
         });
+        
+        this.btn_search.setOnMouseClicked((MouseEvent value) -> {
+            this.searchAttendee();
+        });
+        
+        this.cmb_sort.setOnAction((a)->{
+            String selected = this.cmb_sort.getSelectionModel().getSelectedItem();
+            System.out.println(selected);
+            if(selected.equalsIgnoreCase("All")) {
+                this.refreshTable(null);
+            } else if(selected.equalsIgnoreCase("Male")) {
+                this.refreshTable("M");
+            } else if(selected.equalsIgnoreCase("Female")) {
+                this.refreshTable("F");
+            }
+        });
+        
+        this.btn_extras.setOnMouseClicked((MouseEvent value) -> {
+            this.changeRoot(new Settings().load());
+        });
+    }
+    
+    private void searchAttendee() {
+        String keyTag = this.txt_search.getText();
+        if(keyTag.isEmpty()) {
+            this.refreshTable(null);
+            return;
+        }
+        
+        try {
+            List<AttendeeModel> content = AttendeeModel.searchAttendee(keyTag);
+            this.createTable(content);
+        } catch (SQLException ex) {
+            Logger.getLogger(SystemHome.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void refreshStatus() {
+        this.maleCount = 0;
+        this.femaleCount = 0;
+        List<AttendeeModel> content;
+        try {
+            content = AttendeeModel.listAllActive(null);
+            for(AttendeeModel each: content) {
+                if(each.getGender() != null) {
+                    if(each.getGender().equalsIgnoreCase("M")) {
+                        maleCount++;
+                    } else {
+                        femaleCount++;
+                    }
+                }
+            }
+            
+            this.lbl_female_count.setText(femaleCount + "");
+            this.lbl_male_count.setText(maleCount + "");
+            this.lbl_total_no.setText(content.size() + "");
+            return;
+        } catch (SQLException ex) {
+            Logger.getLogger(SystemHome.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        this.lbl_female_count.setText("0");
+        this.lbl_male_count.setText("0");
+        this.lbl_total_no.setText("0");
     }
     
     private SimpleTable tableAttendee = new SimpleTable();
     private Integer maleCount = 0, femaleCount = 0;
-    private void createTable() throws SQLException {
+    private void createTable(List<AttendeeModel> content) throws SQLException {
         this.btn_generate.setDisable(true);
         this.btn_delete.setDisable(true);
-        this.maleCount = 0;
-        this.femaleCount = 0;
         this.tableAttendee.getChildren().clear();
-        List<AttendeeModel> content = AttendeeModel.listAllActive();
+        if(content.isEmpty()) {
+            this.vbox_no_result.setVisible(true);
+            this.tbl_attendees.setVisible(false);
+        } else {
+            this.vbox_no_result.setVisible(false);
+            this.tbl_attendees.setVisible(true);
+        }
         for(AttendeeModel each: content) {
             this.createRow(each);
-            if(each.getGender() != null) {
-                if(each.getGender().equalsIgnoreCase("M")) {
-                    maleCount++;
-                } else {
-                    femaleCount++;
-                }
-            }
         }
-        this.lbl_female_count.setText(femaleCount + "");
-        this.lbl_male_count.setText(maleCount + "");
-        this.lbl_total_no.setText(content.size() + "");
         
         SimpleTableView simpleTableView = new SimpleTableView();
         simpleTableView.setTable(tableAttendee);
@@ -220,9 +284,18 @@ public class SystemHome extends ApplicationForm {
                 this.showErrorMessage("Unable To Delete", "We cannot delete at this moment. Please try again later.");
             } else {
                 this.showInformationMessage("Successfully Deleted", "Selected attendee(s) are deleted. " + selectedModel.size() + "/" + this.lbl_total_no.getText());
-                this.createTable();
+                this.refreshTable(null);
                 this.selectedModel.clear();
              }
+        }
+    }
+    
+    private void refreshTable(String genderSelected) {
+        try {
+            List<AttendeeModel> content = AttendeeModel.listAllActive(genderSelected);
+            this.createTable(content);
+        } catch (SQLException ex) {
+            Logger.getLogger(SystemHome.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -231,7 +304,7 @@ public class SystemHome extends ApplicationForm {
         ObservableList<Node> rows = this.tableAttendee.getChildren();
         for(Node each: rows) {
             SimpleTableRow row = (SimpleTableRow) each;
-            AttendeeRow eachRow= (AttendeeRow) row.getRowMetaData().get(ROW);
+            AttendeeRow eachRow = (AttendeeRow) row.getRowMetaData().get(ROW);
             AttendeeModel eachModel = (AttendeeModel) row.getRowMetaData().get(CONTENT);
             if(eachRow.isChkbxSelected()) {
                 this.selectedModel.add(eachModel);

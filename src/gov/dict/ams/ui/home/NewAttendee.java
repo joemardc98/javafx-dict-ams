@@ -133,6 +133,13 @@ public class NewAttendee  extends ApplicationForm  {
         });
         
         this.btn_edit.setOnMouseClicked((MouseEvent value) -> {
+            // save the inputted before clearing the textfields & rioud buttons
+            this.fnPrevious = this.txt_first_name.getText();
+            this.lnPrevious = this.txt_last_name.getText();
+            this.miPrevious = this.txt_middle_initial.getText();
+            this.emailPrevious = this.txt_email_add.getText();
+            this.genderPrevious = (this.rbtn_female.isSelected()? "F" : "M");
+            
             this.setEditModePreview();
         });
         
@@ -141,11 +148,11 @@ public class NewAttendee  extends ApplicationForm  {
         }
     }
     
+    private String fnPrevious = "", miPrevious = "", 
+            lnPrevious = "", genderPrevious = "", emailPrevious = "";
     private void setEditModePreview() {
         mode = EDIT;
-        
         this.lbl_title_add.setText("Edit the selected attendee's information here.");
-        
         this.lbl_email_add.setText(this.model.getEmail());
         this.lbl_first_name.setText(this.model.getFirstName());
         this.lbl_gender.setText(this.model.getGender().equalsIgnoreCase("F")? "Female" : "Male");
@@ -212,12 +219,18 @@ public class NewAttendee  extends ApplicationForm  {
             this.lbl_last_name.setText(this.txt_last_name.getText().toUpperCase());
             this.lbl_middle_initial.setText(this.txt_middle_initial.getText().toUpperCase());
 
-            this.txt_email_add.setText("");
-            this.txt_first_name.setText("");
-            this.txt_last_name.setText("");
-            this.txt_middle_initial.setText("");
-            this.rbtn_male.setSelected(true);
-
+            // set previous inputted
+            this.txt_email_add.setText(this.emailPrevious);
+            this.txt_first_name.setText(this.fnPrevious);
+            this.txt_last_name.setText(this.lnPrevious);
+            this.txt_middle_initial.setText(this.miPrevious);
+            if(this.genderPrevious.isEmpty()) {
+                this.rbtn_male.setSelected(true);
+            } else {
+                this.rbtn_female.setSelected(this.genderPrevious.equals("F"));
+                this.rbtn_male.setSelected(this.genderPrevious.equals("M"));
+            }
+            
             this.vbox_newly_added.setVisible(true);
         } else {
             this.showErrorMessage("Failed", "Failed adding new attendee.");
@@ -234,7 +247,7 @@ public class NewAttendee  extends ApplicationForm  {
     
     private void reloadStatus() throws SQLException {
         Integer maleCount = 0, femaleCount = 0;
-        List<AttendeeModel> content = AttendeeModel.listAllActive();
+        List<AttendeeModel> content = AttendeeModel.listAllActive(null);
         for(AttendeeModel each: content) {
             System.out.println(each.getFullName());
             if(each.getGender() != null) {
