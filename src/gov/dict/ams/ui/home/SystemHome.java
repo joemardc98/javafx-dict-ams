@@ -8,6 +8,7 @@ import gov.dict.ams.Context;
 import gov.dict.ams.models.AttendeeModel;
 import java.awt.Desktop;
 import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,15 +26,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import org.afterschoolcreatives.polaris.java.sql.ConnectionManager;
+import org.afterschoolcreatives.polaris.java.util.PolarisProperties;
 import org.afterschoolcreatives.polaris.javafx.scene.control.simpletable.SimpleTable;
 import org.afterschoolcreatives.polaris.javafx.scene.control.simpletable.SimpleTableCell;
 import org.afterschoolcreatives.polaris.javafx.scene.control.simpletable.SimpleTableRow;
 import org.afterschoolcreatives.polaris.javafx.scene.control.simpletable.SimpleTableView;
 
 public class SystemHome extends ApplicationForm {
-
-    @FXML
-    private Label lbl_total_no;
 
     @FXML
     private Label lbl_male_count;
@@ -77,8 +76,19 @@ public class SystemHome extends ApplicationForm {
     @FXML
     private VBox vbox_no_result;
     
+    @FXML
+    private Label lbl_event_name;
+
+    @FXML
+    private Label lbl_venue;
+
+    @FXML
+    private Label lbl_date;
+    
     @Override
     protected void setup() {
+        this.loadText();
+        
         this.vbox_no_result.setVisible(false);
         this.tbl_attendees.setVisible(true);
         
@@ -120,20 +130,7 @@ public class SystemHome extends ApplicationForm {
         });
         
         this.btn_open_dir.setOnMouseClicked(value -> {
-            boolean suuported = false;
-            if (Desktop.isDesktopSupported()) {
-                if (Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
-                    try {
-                        Desktop.getDesktop().open(new File("certificates"));
-                    } catch (Exception e) {
-                        this.showErrorMessage("Failed","The folder is not existing or is empty. Try creating certificates first before opening.");
-                    }
-                    suuported = true;
-                }
-            }
-            if (!suuported) {
-                this.showWarningMessage("Failed","Action Not Supported in this Operating System");
-            }
+            this.openDirFolder();
             value.consume();
         });
         
@@ -161,6 +158,23 @@ public class SystemHome extends ApplicationForm {
         this.btn_extras.setOnMouseClicked((MouseEvent value) -> {
             this.changeRoot(new Settings().load());
         });
+    }
+    
+    private void openDirFolder() {
+        boolean suuported = false;
+        if (Desktop.isDesktopSupported()) {
+            if (Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
+                try {
+                    Desktop.getDesktop().open(new File("certificates"));
+                } catch (Exception e) {
+                    this.showErrorMessage("Failed","The folder is not existing or is empty. Try creating certificates first before opening.");
+                }
+                suuported = true;
+            }
+        }
+        if (!suuported) {
+            this.showWarningMessage("Failed","Action Not Supported in this Operating System");
+        }
     }
     
     private void searchAttendee() {
@@ -196,7 +210,7 @@ public class SystemHome extends ApplicationForm {
             
             this.lbl_female_count.setText(femaleCount + "");
             this.lbl_male_count.setText(maleCount + "");
-            this.lbl_total_no.setText(content.size() + "");
+            this.totalNumber = content.size();
             return;
         } catch (SQLException ex) {
             Logger.getLogger(SystemHome.class.getName()).log(Level.SEVERE, null, ex);
@@ -204,16 +218,15 @@ public class SystemHome extends ApplicationForm {
         
         this.lbl_female_count.setText("0");
         this.lbl_male_count.setText("0");
-        this.lbl_total_no.setText("0");
     }
     
     private SimpleTable tableAttendee = new SimpleTable();
-    private Integer maleCount = 0, femaleCount = 0;
+    private Integer maleCount = 0, femaleCount = 0, totalNumber = 0;
     private void createTable(List<AttendeeModel> content) throws SQLException {
         this.btn_generate.setDisable(true);
         this.btn_delete.setDisable(true);
         this.tableAttendee.getChildren().clear();
-        if(content.isEmpty()) {
+        if(content == null || content.isEmpty()) {
             this.vbox_no_result.setVisible(true);
             this.tbl_attendees.setVisible(false);
         } else {
@@ -230,6 +243,7 @@ public class SystemHome extends ApplicationForm {
         simpleTableView.setParentOnScene(this.tbl_attendees);
         
         this.lbl_total_selected.setText(this.selectedModel.size() + " out of " + this.tableAttendee.getChildren().size());
+        this.captureSelectedModel();
     }
     
     private Image maleIcon = new Image(Context.getResourceStream("drawable/male.png"));
@@ -283,7 +297,7 @@ public class SystemHome extends ApplicationForm {
             if(notDeleted != 0) {
                 this.showErrorMessage("Unable To Delete", "We cannot delete at this moment. Please try again later.");
             } else {
-                this.showInformationMessage("Successfully Deleted", "Selected attendee(s) are deleted. " + selectedModel.size() + "/" + this.lbl_total_no.getText());
+                this.showInformationMessage("Successfully Deleted", "Selected attendee(s) are deleted. " + selectedModel.size() + "/" + this.totalNumber);
                 this.refreshTable(null);
                 this.selectedModel.clear();
              }
@@ -327,5 +341,17 @@ public class SystemHome extends ApplicationForm {
             eachRow.setIsChkbxSelected(selectAll);
         }
         this.lbl_total_selected.setText((selectAll? rows.size() : "0") + " out of " + rows.size());
+    }
+    
+    private void loadText() {
+        PolarisProperties prop = new PolarisProperties();
+        try {
+            prop.read(new File("session.prop"));
+            this.lbl_date.setText(prop.getProperty("lbl_date", ""));
+            this.lbl_event_name.setText(prop.getProperty("lbl_event_name", ""));
+            this.lbl_venue.setText(prop.getProperty("lbl_venue", ""));
+        } catch (IOException e) {
+            // ignore
+        }
     }
 }

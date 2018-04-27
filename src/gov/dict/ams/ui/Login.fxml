@@ -13,15 +13,19 @@
    <children>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
          <children>
-            <ImageView fitHeight="171.0" fitWidth="397.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../storage/drawable/dict_logo.png" />
-               </image>
+            <VBox alignment="CENTER" style="-fx-background-color: #4172AA;">
                <VBox.margin>
-                  <Insets top="20.0" />
+                  <Insets />
                </VBox.margin>
-            </ImageView>
-            <Label text="W E L C O M E !" textFill="#1bc6cd">
+               <children>
+                  <ImageView fitHeight="188.0" fitWidth="515.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../storage/drawable/DICT%20Banner%20Logo%20for%20dark%20backgrounds-20.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </VBox>
+            <Label text="W E L C O M E !" textFill="#4172aa">
                <font>
                   <Font name="Century Gothic Bold" size="43.0" />
                </font>
@@ -34,13 +38,16 @@
                   <Font name="Century Gothic" size="18.0" />
                </font>
                <VBox.margin>
-                  <Insets bottom="30.0" />
+                  <Insets bottom="70.0" top="20.0" />
                </VBox.margin>
             </Label>
             <JFXButton fx:id="btn_login" prefHeight="48.0" prefWidth="245.0" style="-fx-background-color: #028AF8;" text="Continue" textFill="WHITE">
                <font>
                   <Font size="22.0" />
                </font>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
             </JFXButton>
             <JFXButton fx:id="btn_sample" layoutX="601.0" layoutY="311.0" prefHeight="48.0" prefWidth="244.0" style="-fx-background-color: #FB6851;" text="Close" textFill="WHITE">
                <font>
@@ -52,7 +59,7 @@
             </JFXButton>
             <JFXProgressBar fx:id="prgbr_loading" prefHeight="4.0" prefWidth="242.0">
                <VBox.margin>
-                  <Insets top="30.0" />
+                  <Insets top="10.0" />
                </VBox.margin>
             </JFXProgressBar>
             <Label fx:id="lbl_loading" text="Please wait, we're nearly there" textFill="#595959" />
@@ -61,7 +68,7 @@
                   <Image url="@../../../../storage/drawable/afterschoolcreatives/afterschool-creatives-logo_no_bg.png" />
                </image>
                <VBox.margin>
-                  <Insets top="20.0" />
+                  <Insets />
                </VBox.margin>
             </ImageView>
          </children>

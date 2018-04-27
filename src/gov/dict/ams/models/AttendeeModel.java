@@ -69,6 +69,7 @@ public class AttendeeModel extends PolarisRecord {
     public final static String FIRST_NAME = "first_name";
     public final static String MIDDLE_INITIAL = "middle_initial";
     public final static String LAST_NAME = "last_name";
+    public final static String SUFFIX = "suffix";
     public final static String GENDER = "gender";
     public final static String EMAIL = "email";
     public final static String ACTIVE = "active";
@@ -88,6 +89,9 @@ public class AttendeeModel extends PolarisRecord {
 
     @Column(LAST_NAME)
     private String lastName;
+    
+    @Column(SUFFIX)
+    private String suffix;
 
     @Column(GENDER)
     private String gender;
@@ -106,6 +110,7 @@ public class AttendeeModel extends PolarisRecord {
         this.firstName = "";
         this.middleInitial = "";
         this.lastName = "";
+        this.suffix = "";
         this.gender = Gender.UNKNOWN;
         this.email = "";
         this.active = 1;
@@ -115,7 +120,6 @@ public class AttendeeModel extends PolarisRecord {
     // 04-A. Static Inner Classes
     //==========================================================================
     public final static class Gender {
-
         public final static String MALE = "MALE";
         public final static String FEMALE = "FEMALE";
         public final static String UNKNOWN = "UNKNOWN";
@@ -192,6 +196,7 @@ public class AttendeeModel extends PolarisRecord {
                 }
                 tempQuery += " " + LAST_NAME + " like '%" + eachWord + "%' or ";
                 tempQuery += " " + FIRST_NAME + " like '%" + eachWord + "%' or ";
+                tempQuery += " " + SUFFIX + " like '%" + eachWord + "%' or ";
                 tempQuery += " " + MIDDLE_INITIAL + " like '%" + eachWord + "%'";
             }
         }
@@ -210,6 +215,8 @@ public class AttendeeModel extends PolarisRecord {
                     .addStatement("like '%" + keyTag + "%' or ")
                     .addStatement(MIDDLE_INITIAL)
                     .addStatement("like '%" + keyTag + "%' or ")
+                    .addStatement(SUFFIX)
+                    .addStatement(" like '%" + keyTag + "%' or ")
                     .addStatement(EMAIL)
                     .addStatement("like '%" + keyTag + "%' and ")
                     .addStatement(ACTIVE)
@@ -231,26 +238,29 @@ public class AttendeeModel extends PolarisRecord {
         }
     }
    
-   private static String checkIfGender(String keyTag) {
-       if(keyTag.equalsIgnoreCase("MALE")) {
-           return "M";
-       } else if(keyTag.equalsIgnoreCase("FEMALE")) {
-           return "F";
-       }
-       return "";
-   }
-   
     //==========================================================================
     // 04-C. Custom Methods
     //==========================================================================
-    public String getFullName() {
-        return this.getLastName() + ", "
-                + this.getFirstName() + " "
-                + this.getMiddleInitial();
-    }
-    
-    public String getFullName2() {
-        return this.getFirstName() + (!this.getMiddleInitial().isEmpty()? " " + this.getMiddleInitial() : "") + " " + this.getLastName();
+   
+   public enum NameFormat {
+       SURNAME_FIRST, NORMAL
+   }
+   
+    public String getFullName(NameFormat format) {
+        switch(format) {
+            case SURNAME_FIRST:
+                return this.getLastName() + ", "
+                        + this.getFirstName() + " "
+                        + (this.getSuffix().isEmpty()? "" : this.getSuffix() + " ")
+                        + this.getMiddleInitial();
+            case NORMAL:
+                return this.getFirstName() 
+                        + (!this.getMiddleInitial().isEmpty()? " " + this.getMiddleInitial() : "") 
+                        + " " + this.getLastName()
+                        + (!this.getSuffix().isEmpty()? " " + this.getSuffix(): "") ;
+            default:
+                throw new RuntimeException("Invalid Value");
+        }
     }
 
     //==========================================================================
@@ -268,6 +278,10 @@ public class AttendeeModel extends PolarisRecord {
         return (middleInitial ==null? "" : middleInitial);
     }
 
+    public String getSuffix() {
+        return (suffix ==null? "" : suffix);
+    }
+    
     public String getLastName() {
         return lastName;
     }
@@ -299,6 +313,10 @@ public class AttendeeModel extends PolarisRecord {
         this.middleInitial = middleInitial;
     }
 
+    public void setSuffix(String suffix) {
+        this.suffix = suffix;
+    }
+    
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }

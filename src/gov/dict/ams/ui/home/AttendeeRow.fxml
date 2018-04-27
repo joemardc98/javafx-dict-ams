@@ -7,9 +7,10 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="90.0" prefWidth="860.0" spacing="5.0" styleClass="table-row" stylesheets="@../../../../../storage/css/home.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="90.0" prefWidth="860.0" spacing="5.0" style="-fx-background-color: #fff;" styleClass="table-row" stylesheets="@../../../../../storage/css/home.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
    </padding>
@@ -20,28 +21,46 @@
             <Image url="@../../../../../storage/drawable/male.png" />
          </image>
       </ImageView>
-      <Label prefHeight="21.0" prefWidth="27.0" text="ID: " textFill="#505050">
-         <font>
-            <Font size="15.0" />
-         </font></Label>
-      <Label fx:id="lbl_id" layoutX="15.0" layoutY="29.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="78.0" prefWidth="156.0" text="1" textFill="#505050">
-         <font>
-            <Font name="System Bold" size="18.0" />
-         </font></Label>
-      <Label fx:id="lbl_full_name" layoutX="15.0" layoutY="29.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="17.0" prefWidth="185.0" text="De La Cruz Joemar Nucom" textFill="#505050" HBox.hgrow="ALWAYS">
-         <font>
-            <Font name="System Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="lbl_email" alignment="CENTER_RIGHT" layoutX="149.0" layoutY="27.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="78.0" prefWidth="276.0" text="joemardc98@gmail.com" textAlignment="RIGHT" textFill="#505050">
-         <font>
-            <Font size="15.0" />
-         </font></Label>
-      <JFXButton fx:id="btn_edit" contentDisplay="CENTER" text=" " textAlignment="CENTER">
+      <VBox alignment="CENTER" maxWidth="-Infinity" prefHeight="78.0" prefWidth="68.0">
+         <children>
+            <Label alignment="CENTER" prefHeight="21.0" prefWidth="952.0" text="ID" textAlignment="CENTER" textFill="#475265">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbl_id" alignment="BOTTOM_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="16.0" prefWidth="50.0" text="1" textAlignment="CENTER" textFill="#475265">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <VBox maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+         <children>
+            <Label fx:id="lbl_full_name" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="78.0" prefWidth="353.0" text="De La Cruz Joemar Nucom" textFill="#475265">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <VBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+         <HBox.margin>
+            <Insets right="10.0" />
+         </HBox.margin>
+         <children>
+            <Label fx:id="lbl_email" alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="78.0" prefWidth="276.0" text="joemardc98@gmail.com" textFill="#475265">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <JFXButton fx:id="btn_edit" contentDisplay="CENTER" prefHeight="62.0" prefWidth="46.0" styleClass="button2" text=" " textAlignment="CENTER">
          <graphic>
             <ImageView fitHeight="32.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../storage/drawable/edit.png" />
+                  <Image url="@../../../../../storage/drawable/icons8-compose-filled-50.png" />
                </image>
             </ImageView>
          </graphic>

@@ -27,6 +27,8 @@ import com.jfoenix.controls.JFXButton;
 import gov.dict.ams.ApplicationForm;
 import gov.dict.ams.Context;
 import gov.dict.ams.models.AttendeeModel;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
@@ -39,6 +41,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import org.afterschoolcreatives.polaris.java.sql.ConnectionManager;
+import org.afterschoolcreatives.polaris.java.util.PolarisProperties;
 import org.afterschoolcreatives.polaris.javafx.fxml.PolarisFxController;
 import org.afterschoolcreatives.polaris.javafx.scene.control.PolarisDialog;
 
@@ -49,8 +52,14 @@ import org.afterschoolcreatives.polaris.javafx.scene.control.PolarisDialog;
 public class NewAttendee  extends ApplicationForm  {
 
     @FXML
-    private Label lbl_total_no;
+    private Label lbl_event_name;
 
+    @FXML
+    private Label lbl_venue;
+
+    @FXML
+    private Label lbl_date;
+    
     @FXML
     private Label lbl_male_count;
 
@@ -108,9 +117,16 @@ public class NewAttendee  extends ApplicationForm  {
     @FXML
     private JFXButton btn_edit;
     
+    @FXML
+    private TextField txt_suffix;
+    
+    @FXML
+    private Label lbl_suffix;
+
     private String mode = "ADD", ADD = "ADD", EDIT = "EDIT";
     @Override
     protected void setup() {
+        this.loadText();
         this.vbox_newly_added.setVisible(false);
         
         ToggleGroup grp = new ToggleGroup();
@@ -124,6 +140,14 @@ public class NewAttendee  extends ApplicationForm  {
             Logger.getLogger(NewAttendee.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        this.eventHandler();
+        
+        if(mode.equalsIgnoreCase(EDIT)) {
+            this.setEditModePreview();
+        }
+    }
+    
+    private void eventHandler() {
         this.btn_home.setOnMouseClicked((MouseEvent value) -> {
             this.changeRoot(new SystemHome().load());
         });
@@ -138,18 +162,16 @@ public class NewAttendee  extends ApplicationForm  {
             this.lnPrevious = this.txt_last_name.getText();
             this.miPrevious = this.txt_middle_initial.getText();
             this.emailPrevious = this.txt_email_add.getText();
+            this.suffixPrevious = this.txt_suffix.getText();
             this.genderPrevious = (this.rbtn_female.isSelected()? "F" : "M");
             
             this.setEditModePreview();
         });
-        
-        if(mode.equalsIgnoreCase(EDIT)) {
-            this.setEditModePreview();
-        }
     }
     
     private String fnPrevious = "", miPrevious = "", 
-            lnPrevious = "", genderPrevious = "", emailPrevious = "";
+            lnPrevious = "", genderPrevious = "", emailPrevious = "",
+            suffixPrevious = "";
     private void setEditModePreview() {
         mode = EDIT;
         this.lbl_title_add.setText("Edit the selected attendee's information here.");
@@ -159,12 +181,14 @@ public class NewAttendee  extends ApplicationForm  {
         this.lbl_id.setText(model.getId() + "");
         this.lbl_last_name.setText(this.model.getLastName());
         this.lbl_middle_initial.setText(this.model.getMiddleInitial());
+        this.lbl_suffix.setText(this.model.getSuffix());
         
         this.btn_add.setText("Save Changes");
         this.txt_email_add.setText(this.lbl_email_add.getText());
         this.txt_first_name.setText(this.lbl_first_name.getText());
         this.txt_last_name.setText(this.lbl_last_name.getText());
         this.txt_middle_initial.setText(this.lbl_middle_initial.getText());
+        this.txt_suffix.setText(this.lbl_suffix.getText());
         this.rbtn_male.setSelected(!this.lbl_gender.getText().equalsIgnoreCase("Female"));
         this.rbtn_female.setSelected(!this.lbl_gender.getText().equalsIgnoreCase("Male"));
     }
@@ -218,12 +242,14 @@ public class NewAttendee  extends ApplicationForm  {
             this.lbl_id.setText(model.getId() + "");
             this.lbl_last_name.setText(this.txt_last_name.getText().toUpperCase());
             this.lbl_middle_initial.setText(this.txt_middle_initial.getText().toUpperCase());
+            this.lbl_suffix.setText(this.txt_suffix.getText().toUpperCase());
 
             // set previous inputted
             this.txt_email_add.setText(this.emailPrevious);
             this.txt_first_name.setText(this.fnPrevious);
             this.txt_last_name.setText(this.lnPrevious);
             this.txt_middle_initial.setText(this.miPrevious);
+            this.txt_suffix.setText(this.suffixPrevious);
             if(this.genderPrevious.isEmpty()) {
                 this.rbtn_male.setSelected(true);
             } else {
@@ -243,13 +269,14 @@ public class NewAttendee  extends ApplicationForm  {
         model.setGender(this.rbtn_female.isSelected()? "F" : "M");
         model.setLastName(this.txt_last_name.getText().toUpperCase());
         model.setMiddleInitial(this.txt_middle_initial.getText().toUpperCase());
+        model.setSuffix(this.txt_suffix.getText().toUpperCase());
     }
     
     private void reloadStatus() throws SQLException {
         Integer maleCount = 0, femaleCount = 0;
         List<AttendeeModel> content = AttendeeModel.listAllActive(null);
         for(AttendeeModel each: content) {
-            System.out.println(each.getFullName());
+            System.out.println(each.getFullName(AttendeeModel.NameFormat.SURNAME_FIRST));
             if(each.getGender() != null) {
                 if(each.getGender().equalsIgnoreCase("M")) {
                     maleCount++;
@@ -260,11 +287,22 @@ public class NewAttendee  extends ApplicationForm  {
         }
         this.lbl_female_count.setText(femaleCount + "");
         this.lbl_male_count.setText(maleCount + "");
-        this.lbl_total_no.setText(content.size() + "");
     }
     
     public void setEditMode(AttendeeModel model) {
         this.mode = EDIT;
         this.model = model;
+    }
+    
+    private void loadText() {
+        PolarisProperties prop = new PolarisProperties();
+        try {
+            prop.read(new File("session.prop"));
+            this.lbl_date.setText(prop.getProperty("lbl_date", ""));
+            this.lbl_event_name.setText(prop.getProperty("lbl_event_name", ""));
+            this.lbl_venue.setText(prop.getProperty("lbl_venue", ""));
+        } catch (IOException e) {
+            // ignore
+        }
     }
 }

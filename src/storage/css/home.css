@@ -1,6 +1,6 @@
 
 .table-row:hover {
-    -fx-background-color: #ccccff
+    -fx-background-color: #9EE1F2
 }
 
 
@@ -9,3 +9,10 @@
     -fx-boredr-width: 2;
 }
 
+.button:hover {
+    -fx-background-color: #011419;
+}
+
+.button {
+    -fx-background-color: #1F8FE8
+}

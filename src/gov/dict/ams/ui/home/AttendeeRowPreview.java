@@ -47,7 +47,7 @@ public class AttendeeRowPreview extends PolarisFxController {
     private AttendeeModel content;
     @Override
     protected void setup() {
-        this.lbl_full_name.setText(content.getFullName());
+        this.lbl_full_name.setText(content.getFullName(AttendeeModel.NameFormat.SURNAME_FIRST));
         this.imgvw_gender.setImage(gender);
     }
 

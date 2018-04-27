@@ -68,7 +68,7 @@ public class AttendeeRow extends PolarisFxController {
     @Override
     protected void setup() {
         this.lbl_email.setText(content.getEmail()==null? "No Email Address Found" : content.getEmail());
-        this.lbl_full_name.setText(content.getFullName());
+        this.lbl_full_name.setText(content.getFullName(AttendeeModel.NameFormat.SURNAME_FIRST));
         this.lbl_id.setText(content.getId() + "");
         this.imgvw_gender.setImage(gender);
         this.btn_edit.setOnMouseClicked((MouseEvent value)->{

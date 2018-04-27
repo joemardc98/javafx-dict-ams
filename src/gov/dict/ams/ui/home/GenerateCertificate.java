@@ -224,7 +224,7 @@ public class GenerateCertificate extends ApplicationForm {
             reader = new PdfReader(templateFile.getAbsolutePath());
             Document document = new Document();
             document.setPageSize(reader.getPageSize(1));
-            OutputStream out = new FileOutputStream("certificates" + File.separator  + eachModel.getId() + "_" + eachModel.getFullName()  + ".pdf");
+            OutputStream out = new FileOutputStream("certificates" + File.separator  + eachModel.getId() + "_" + eachModel.getFullName(AttendeeModel.NameFormat.SURNAME_FIRST)  + ".pdf");
             PdfWriter writer = PdfWriter.getInstance(document, out);
             document.open();
             PdfContentByte cb = writer.getDirectContent();
@@ -238,7 +238,7 @@ public class GenerateCertificate extends ApplicationForm {
             
             Paragraph text = new Paragraph(50);
             text.setAlignment(Element.ALIGN_CENTER);
-            Chunk chunk = new Chunk(eachModel.getFullName2(), FontCreator.createFont(this.cmb_font_style.getSelectionModel().getSelectedIndex(), this.cmb_font_size.getSelectionModel().getSelectedItem()));
+            Chunk chunk = new Chunk(eachModel.getFullName(AttendeeModel.NameFormat.NORMAL), FontCreator.createFont(this.cmb_font_style.getSelectionModel().getSelectedIndex(), this.cmb_font_size.getSelectionModel().getSelectedItem()));
             //chunk.setUnderline(0.1f, -2f);
             text.add(chunk);
             

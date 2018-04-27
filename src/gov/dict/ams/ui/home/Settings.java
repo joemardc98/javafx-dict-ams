@@ -26,6 +26,7 @@ package gov.dict.ams.ui.home;
 import com.jfoenix.controls.JFXButton;
 import gov.dict.ams.ApplicationForm;
 import gov.dict.ams.models.AttendeeModel;
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -38,18 +39,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import org.afterschoolcreatives.polaris.java.io.FileTool;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.afterschoolcreatives.polaris.java.util.PolarisProperties;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.IndexedColors;
 
 /**
  *
@@ -58,7 +56,13 @@ import org.apache.poi.ss.usermodel.IndexedColors;
 public class Settings extends ApplicationForm {
 
     @FXML
-    private Label lbl_total_no;
+    private Label lbl_event_name;
+
+    @FXML
+    private Label lbl_venue;
+
+    @FXML
+    private Label lbl_date;
 
     @FXML
     private Label lbl_male_count;
@@ -75,8 +79,25 @@ public class Settings extends ApplicationForm {
     @FXML
     private JFXButton btn_back;
     
+    @FXML
+    private TextField txt_event_name;
+
+    @FXML
+    private TextField txt_venue;
+
+    @FXML
+    private TextField txt_date;
+
+    @FXML
+    private JFXButton btn_save_changes;
+    
+    @FXML
+    private Label lbl_show_folder;
+    
     @Override
     protected void setup() {
+        this.lbl_show_folder.setVisible(false);
+        this.loadText();
         this.refreshStatus();
         this.eventHandler();
     }
@@ -105,7 +126,7 @@ public class Settings extends ApplicationForm {
             
             try {
                 if (!FileTool.checkFolders("template")) {
-                    
+                    System.out.println("IM HERE");
                 }
                 boolean res = FileTool.copyQuietly(file, new File("template" + File.separator + "certification_template.pdf"));
                 if(res) {
@@ -117,12 +138,68 @@ public class Settings extends ApplicationForm {
                 Logger.getLogger(Settings.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+        this.btn_save_changes.setOnMouseClicked((MouseEvent value) -> {
+            this.saveText();
+        });
+        this.lbl_show_folder.setOnMouseClicked((MouseEvent value) -> {
+            this.openDirFolder();
+        });
     }
     
+    private void openDirFolder() {
+        boolean suuported = false;
+        if (Desktop.isDesktopSupported()) {
+            if (Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
+                try {
+                    Desktop.getDesktop().open(selectedDirectory);
+                } catch (Exception e) {
+                    this.showErrorMessage("Failed","The folder is not existing or is empty. Try creating certificates first before opening.");
+                }
+                suuported = true;
+            }
+        }
+        if (!suuported) {
+            this.showWarningMessage("Failed","Action Not Supported in this Operating System");
+        }
+    }
+    
+    private void loadText() {
+        PolarisProperties prop = new PolarisProperties();
+        try {
+            prop.read(new File("session.prop"));
+            
+            // set label
+            this.lbl_date.setText(prop.getProperty("lbl_date", ""));
+            this.lbl_event_name.setText(prop.getProperty("lbl_event_name", ""));
+            this.lbl_venue.setText(prop.getProperty("lbl_venue", ""));
+            
+            // set textfields
+            this.txt_date.setText(prop.getProperty("lbl_date", ""));
+            this.txt_event_name.setText(prop.getProperty("lbl_event_name", ""));
+            this.txt_venue.setText(prop.getProperty("lbl_venue", ""));
+        } catch (IOException e) {
+            // ignore
+        }
+    }
+    
+    private void saveText() {
+        PolarisProperties prop = new PolarisProperties();
+        prop.setProperty("lbl_date", this.txt_date.getText().trim());
+        prop.setProperty("lbl_event_name", this.txt_event_name.getText().trim());
+        prop.setProperty("lbl_venue", this.txt_venue.getText().trim());
+        try {
+            prop.write(new File("session.prop"));
+            this.showInformationMessage("Saved Successfully", "Successfully updated the Header Display.");
+        } catch (IOException e) {
+            this.showErrorMessage("Cannot Save Changes", "Please try saving again later.");
+        }
+    }
+    
+    private File selectedDirectory = null;
     private void exportExcel() {
         //choose location
         DirectoryChooser directoryChooser = new DirectoryChooser();
-        File selectedDirectory = directoryChooser.showDialog(this.getStage());
+        selectedDirectory = directoryChooser.showDialog(this.getStage());
         if(selectedDirectory ==  null) {
             return;
         }
@@ -154,12 +231,14 @@ public class Settings extends ApplicationForm {
                 ctrRow++;
             }
 
-            SimpleDateFormat sdf = new SimpleDateFormat("MM_dd_yy_hh_mm_ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd_hh_mm_ss");
             String filePath = selectedDirectory.getAbsolutePath() + "\\" + sdf.format(new Date()) + ".xls";
             
             FileOutputStream fileOut = new FileOutputStream(filePath);
             workbook.write(fileOut);
             fileOut.close();
+            this.lbl_show_folder.setVisible(true);
+            this.showInformationMessage("Exported Successfully", "Your exported excel file is saved. " + filePath);
         } catch (SQLException ex) {
             Logger.getLogger(Settings.class.getName()).log(Level.SEVERE, null, ex);
         } catch (FileNotFoundException ex) {
@@ -186,7 +265,6 @@ public class Settings extends ApplicationForm {
             
             this.lbl_female_count.setText(femaleCount + "");
             this.lbl_male_count.setText(maleCount + "");
-            this.lbl_total_no.setText(content.size() + "");
             return;
         } catch (SQLException ex) {
             Logger.getLogger(SystemHome.class.getName()).log(Level.SEVERE, null, ex);
@@ -194,6 +272,5 @@ public class Settings extends ApplicationForm {
         
         this.lbl_female_count.setText("0");
         this.lbl_male_count.setText("0");
-        this.lbl_total_no.setText("0");
     }
 }
