@@ -25,6 +25,7 @@ package gov.dict.ams.ui.home;
 
 import com.jfoenix.controls.JFXButton;
 import gov.dict.ams.ApplicationForm;
+import gov.dict.ams.Properties;
 import gov.dict.ams.models.AttendeeModel;
 import java.awt.Desktop;
 import java.io.File;
@@ -164,33 +165,26 @@ public class Settings extends ApplicationForm {
     }
     
     private void loadText() {
-        PolarisProperties prop = new PolarisProperties();
-        try {
-            prop.read(new File("session.prop"));
-            
-            // set label
-            this.lbl_date.setText(prop.getProperty("lbl_date", ""));
-            this.lbl_event_name.setText(prop.getProperty("lbl_event_name", ""));
-            this.lbl_venue.setText(prop.getProperty("lbl_venue", ""));
-            
-            // set textfields
-            this.txt_date.setText(prop.getProperty("lbl_date", ""));
-            this.txt_event_name.setText(prop.getProperty("lbl_event_name", ""));
-            this.txt_venue.setText(prop.getProperty("lbl_venue", ""));
-        } catch (IOException e) {
-            // ignore
-        }
+        Properties.instance();
+        // set label
+        this.lbl_date.setText(Properties.getProperty("lbl_date"));
+        this.lbl_event_name.setText(Properties.getProperty("lbl_event_name"));
+        this.lbl_venue.setText(Properties.getProperty("lbl_venue"));
+        // set textfields
+        this.txt_date.setText(Properties.getProperty("lbl_date"));
+        this.txt_event_name.setText(Properties.getProperty("lbl_event_name"));
+        this.txt_venue.setText(Properties.getProperty("lbl_venue"));
     }
     
     private void saveText() {
-        PolarisProperties prop = new PolarisProperties();
-        prop.setProperty("lbl_date", this.txt_date.getText().trim());
-        prop.setProperty("lbl_event_name", this.txt_event_name.getText().trim());
-        prop.setProperty("lbl_venue", this.txt_venue.getText().trim());
-        try {
-            prop.write(new File("session.prop"));
+        Properties.instance();
+        Properties.setProperty("lbl_date", this.txt_date.getText().trim());
+        Properties.setProperty("lbl_event_name", this.txt_event_name.getText().trim());
+        Properties.setProperty("lbl_venue", this.txt_venue.getText().trim());
+        if(Properties.saveProperty()) {
             this.showInformationMessage("Saved Successfully", "Successfully updated the Header Display.");
-        } catch (IOException e) {
+            this.loadText();
+        } else {
             this.showErrorMessage("Cannot Save Changes", "Please try saving again later.");
         }
     }

@@ -26,6 +26,7 @@ package gov.dict.ams.ui.home;
 import com.jfoenix.controls.JFXButton;
 import gov.dict.ams.ApplicationForm;
 import gov.dict.ams.Context;
+import gov.dict.ams.Properties;
 import gov.dict.ams.models.AttendeeModel;
 import java.io.File;
 import java.io.IOException;
@@ -295,14 +296,9 @@ public class NewAttendee  extends ApplicationForm  {
     }
     
     private void loadText() {
-        PolarisProperties prop = new PolarisProperties();
-        try {
-            prop.read(new File("session.prop"));
-            this.lbl_date.setText(prop.getProperty("lbl_date", ""));
-            this.lbl_event_name.setText(prop.getProperty("lbl_event_name", ""));
-            this.lbl_venue.setText(prop.getProperty("lbl_venue", ""));
-        } catch (IOException e) {
-            // ignore
-        }
+        Properties.instance();
+        this.lbl_date.setText(Properties.getProperty("lbl_date"));
+        this.lbl_event_name.setText(Properties.getProperty("lbl_event_name"));
+        this.lbl_venue.setText(Properties.getProperty("lbl_venue"));
     }
 }
