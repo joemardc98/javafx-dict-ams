@@ -42,7 +42,7 @@ public class Properties {
         }
     }
     
-    public static Properties instance() {
+    public static Properties instantiate() {
         return new Properties();
     }
     

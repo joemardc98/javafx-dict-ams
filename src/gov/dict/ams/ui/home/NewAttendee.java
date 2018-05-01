@@ -176,32 +176,65 @@ public class NewAttendee  extends ApplicationForm  {
     private void setEditModePreview() {
         mode = EDIT;
         this.lbl_title_add.setText("Edit the selected attendee's information here.");
-        this.lbl_email_add.setText(this.model.getEmail());
+        this.lbl_email_add.setText(this.model.getEmail().isEmpty()? DEFAULT_EMAIL_ADD : this.model.getEmail());
         this.lbl_first_name.setText(this.model.getFirstName());
         this.lbl_gender.setText(this.model.getGender().equalsIgnoreCase("F")? "Female" : "Male");
         this.lbl_id.setText(model.getId() + "");
         this.lbl_last_name.setText(this.model.getLastName());
-        this.lbl_middle_initial.setText(this.model.getMiddleInitial());
-        this.lbl_suffix.setText(this.model.getSuffix());
+        this.lbl_middle_initial.setText(this.model.getMiddleInitial().isEmpty()? DEFAULT_MI : this.model.getMiddleInitial());
+        this.lbl_suffix.setText(this.model.getSuffix().isEmpty()? DEFAULT_SUFFIX : this.model.getSuffix());
         
         this.btn_add.setText("Save Changes");
-        this.txt_email_add.setText(this.lbl_email_add.getText());
-        this.txt_first_name.setText(this.lbl_first_name.getText());
-        this.txt_last_name.setText(this.lbl_last_name.getText());
-        this.txt_middle_initial.setText(this.lbl_middle_initial.getText());
-        this.txt_suffix.setText(this.lbl_suffix.getText());
+        this.btn_edit.setDisable(true);
+        this.txt_email_add.setText(this.model.getEmail());
+        this.txt_first_name.setText(this.model.getFirstName());
+        this.txt_last_name.setText(this.model.getLastName());
+        this.txt_middle_initial.setText(this.model.getMiddleInitial());
+        this.txt_suffix.setText(this.model.getSuffix());
         this.rbtn_male.setSelected(!this.lbl_gender.getText().equalsIgnoreCase("Female"));
         this.rbtn_female.setSelected(!this.lbl_gender.getText().equalsIgnoreCase("Male"));
     }
     
     private AttendeeModel model = new AttendeeModel();
     private void addNew() {
-        if(this.txt_first_name.getText().equalsIgnoreCase("")) {
+        if(this.txt_first_name.getText().trim().equalsIgnoreCase("")) {
             this.showWarningMessage("Empty Field", "Please fill up the fields with asterisk (*) to continue.");
             return;
-        } else if(this.txt_last_name.getText().equalsIgnoreCase("")) {
+        } else if(this.txt_last_name.getText().trim().equalsIgnoreCase("")) {
             this.showWarningMessage("Empty Field", "Please fill up the fields with asterisk (*) to continue.");
             return;
+        }
+        String temp_email = this.txt_email_add.getText().trim();
+        if(!temp_email.isEmpty()) {
+            boolean invalidEmail = false;
+            if(!temp_email.contains("@") || !temp_email.contains(".") || temp_email.length()==2) {
+                invalidEmail = true;
+                System.out.println("1");
+            } else {
+                String[] explodedEmail = temp_email.split("@");
+                if(explodedEmail[0].isEmpty()) {
+                    invalidEmail = true;
+                    System.out.println("2");
+                } else {
+                    String strCheck = explodedEmail[1];
+                    if(strCheck.length() < 3) {
+                        System.out.println("6");
+                        invalidEmail = true;
+                    } else {
+                        int indexOfDot = strCheck.indexOf(".");
+                        String phase1 = strCheck.substring(0, indexOfDot);
+                        String phase2 = strCheck.substring(indexOfDot, strCheck.length());
+                        if(phase1.isEmpty() || phase2.isEmpty()) {
+                            System.out.println("7");
+                            invalidEmail = true;
+                        }
+                    }
+                }
+            }
+            if(invalidEmail) {
+                this.showWarningMessage("Invalid Email", "Please provide a valid email address or just keep this field empty to continue.");
+                return;
+            }
         }
         if(mode.equalsIgnoreCase(EDIT)) {
             this.setModelValues();
@@ -213,6 +246,7 @@ public class NewAttendee  extends ApplicationForm  {
             }
             this.setPreviewResult(res);
             this.btn_add.setText("Add");
+            this.btn_edit.setDisable(false);
             mode = ADD;
             this.lbl_title_add.setText("Please fill up the following then click Add.");
             return;
@@ -228,6 +262,8 @@ public class NewAttendee  extends ApplicationForm  {
         this.setPreviewResult(res);
     }
     
+    private String DEFAULT_EMAIL_ADD = "--", DEFAULT_SUFFIX = "--",
+            DEFAULT_MI = "--";
     private void setPreviewResult(boolean res) {
         if(res) {
             if(mode.equalsIgnoreCase(ADD)) {
@@ -237,13 +273,13 @@ public class NewAttendee  extends ApplicationForm  {
                     Logger.getLogger(NewAttendee.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            this.lbl_email_add.setText(this.txt_email_add.getText());
-            this.lbl_first_name.setText(this.txt_first_name.getText().toUpperCase());
+            this.lbl_email_add.setText(this.txt_email_add.getText().trim().isEmpty()? DEFAULT_EMAIL_ADD : this.txt_email_add.getText().trim().toLowerCase());
+            this.lbl_first_name.setText(this.txt_first_name.getText().trim().toUpperCase());
             this.lbl_gender.setText(this.rbtn_female.isSelected()? "Female" : "Male");
             this.lbl_id.setText(model.getId() + "");
-            this.lbl_last_name.setText(this.txt_last_name.getText().toUpperCase());
-            this.lbl_middle_initial.setText(this.txt_middle_initial.getText().toUpperCase());
-            this.lbl_suffix.setText(this.txt_suffix.getText().toUpperCase());
+            this.lbl_last_name.setText(this.txt_last_name.getText().trim().toUpperCase());
+            this.lbl_middle_initial.setText(this.txt_middle_initial.getText().trim().isEmpty()? DEFAULT_MI : this.txt_middle_initial.getText().trim().toUpperCase());
+            this.lbl_suffix.setText(this.txt_suffix.getText().trim().isEmpty()? DEFAULT_SUFFIX : this.txt_suffix.getText().trim().toUpperCase());
 
             // set previous inputted
             this.txt_email_add.setText(this.emailPrevious);
@@ -265,12 +301,12 @@ public class NewAttendee  extends ApplicationForm  {
     }
     
     private void setModelValues() {
-        model.setEmail(this.txt_email_add.getText());
-        model.setFirstName(this.txt_first_name.getText().toUpperCase());
+        model.setEmail(this.txt_email_add.getText().trim().toLowerCase());
+        model.setFirstName(this.txt_first_name.getText().trim().toUpperCase());
         model.setGender(this.rbtn_female.isSelected()? "F" : "M");
-        model.setLastName(this.txt_last_name.getText().toUpperCase());
-        model.setMiddleInitial(this.txt_middle_initial.getText().toUpperCase());
-        model.setSuffix(this.txt_suffix.getText().toUpperCase());
+        model.setLastName(this.txt_last_name.getText().trim().toUpperCase());
+        model.setMiddleInitial(this.txt_middle_initial.getText().trim().toUpperCase());
+        model.setSuffix(this.txt_suffix.getText().trim().toUpperCase());
     }
     
     private void reloadStatus() throws SQLException {
@@ -296,7 +332,7 @@ public class NewAttendee  extends ApplicationForm  {
     }
     
     private void loadText() {
-        Properties.instance();
+        Properties.instantiate();
         this.lbl_date.setText(Properties.getProperty("lbl_date"));
         this.lbl_event_name.setText(Properties.getProperty("lbl_event_name"));
         this.lbl_venue.setText(Properties.getProperty("lbl_venue"));

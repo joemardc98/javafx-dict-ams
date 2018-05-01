@@ -6,10 +6,10 @@ import com.jfoenix.controls.JFXCheckBox;
 import gov.dict.ams.ApplicationForm;
 import gov.dict.ams.Context;
 import gov.dict.ams.Properties;
+import gov.dict.ams.Storage;
 import gov.dict.ams.models.AttendeeModel;
 import java.awt.Desktop;
 import java.io.File;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +22,12 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import org.afterschoolcreatives.polaris.java.sql.ConnectionManager;
-import org.afterschoolcreatives.polaris.java.util.PolarisProperties;
 import org.afterschoolcreatives.polaris.javafx.scene.control.simpletable.SimpleTable;
 import org.afterschoolcreatives.polaris.javafx.scene.control.simpletable.SimpleTableCell;
 import org.afterschoolcreatives.polaris.javafx.scene.control.simpletable.SimpleTableRow;
@@ -86,6 +86,12 @@ public class SystemHome extends ApplicationForm {
     @FXML
     private Label lbl_date;
     
+    @FXML
+    private ImageView btn_about;
+    
+    @FXML
+    private ImageView btn_about2;
+    
     @Override
     protected void setup() {
         this.loadText();
@@ -131,7 +137,7 @@ public class SystemHome extends ApplicationForm {
         });
         
         this.btn_open_dir.setOnMouseClicked(value -> {
-            this.openDirFolder();
+            this.openDirFolder("certificates");
             value.consume();
         });
         
@@ -159,14 +165,22 @@ public class SystemHome extends ApplicationForm {
         this.btn_extras.setOnMouseClicked((MouseEvent value) -> {
             this.changeRoot(new Settings().load());
         });
+        
+        this.btn_about.setOnMouseClicked((MouseEvent value) -> {
+            this.changeRoot(new About().load());
+        });
+        
+        this.btn_about2.setOnMouseClicked((MouseEvent value) -> {
+            this.changeRoot(new About().load());
+        });
     }
     
-    private void openDirFolder() {
+    private void openDirFolder(String dir) {
         boolean suuported = false;
         if (Desktop.isDesktopSupported()) {
             if (Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
                 try {
-                    Desktop.getDesktop().open(new File("certificates"));
+                    Desktop.getDesktop().open(new File(/*"certificates"*/dir));
                 } catch (Exception e) {
                     this.showErrorMessage("Failed","The folder is not existing or is empty. Try creating certificates first before opening.");
                 }
@@ -234,6 +248,13 @@ public class SystemHome extends ApplicationForm {
             this.vbox_no_result.setVisible(false);
             this.tbl_attendees.setVisible(true);
         }
+        
+        Storage.setBtn_add(btn_add);
+        Storage.setBtn_delete(btn_delete);
+        Storage.setBtn_generate(btn_generate);
+        Storage.setChkbx_select_all(chkbx_select_all);
+        Storage.setLbl_total_selected(lbl_total_selected);
+        
         for(AttendeeModel each: content) {
             this.createRow(each);
         }
@@ -259,7 +280,8 @@ public class SystemHome extends ApplicationForm {
         AttendeeRow itemRow = new AttendeeRow();
         itemRow.setContent(content);
         itemRow.setRow(row);
-        itemRow.setBtn_add_new(this.btn_add);
+        itemRow.setSelectedModel(selectedModel);
+        itemRow.setTableAttendee(tableAttendee);
         
         if(content.getGender() != null) {
             if(content.getGender().equalsIgnoreCase("F")) {
@@ -345,7 +367,7 @@ public class SystemHome extends ApplicationForm {
     }
     
     private void loadText() {
-        Properties.instance();
+        Properties.instantiate();
         this.lbl_date.setText(Properties.getProperty("lbl_date"));
         this.lbl_event_name.setText(Properties.getProperty("lbl_event_name"));
         this.lbl_venue.setText(Properties.getProperty("lbl_venue"));

@@ -33,9 +33,12 @@ import com.itextpdf.text.pdf.PdfImportedPage;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
 import gov.dict.ams.ApplicationForm;
 import gov.dict.ams.Context;
+import gov.dict.ams.Properties;
 import gov.dict.ams.models.AttendeeModel;
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -57,7 +60,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import org.afterschoolcreatives.polaris.java.io.FileTool;
-import org.afterschoolcreatives.polaris.javafx.scene.control.PolarisDialog;
 import org.afterschoolcreatives.polaris.javafx.scene.control.simpletable.SimpleTable;
 import org.afterschoolcreatives.polaris.javafx.scene.control.simpletable.SimpleTableCell;
 import org.afterschoolcreatives.polaris.javafx.scene.control.simpletable.SimpleTableRow;
@@ -70,8 +72,14 @@ import org.afterschoolcreatives.polaris.javafx.scene.control.simpletable.SimpleT
 public class GenerateCertificate extends ApplicationForm {
 
     @FXML
-    private Label lbl_total_no;
+    private Label lbl_event_name;
 
+    @FXML
+    private Label lbl_venue;
+
+    @FXML
+    private Label lbl_date;
+    
     @FXML
     private Label lbl_male_count;
 
@@ -99,13 +107,22 @@ public class GenerateCertificate extends ApplicationForm {
     @FXML
     private TextField txt_spacing;
     
+    @FXML
+    private JFXButton btn_back;
+    
+    @FXML
+    private JFXCheckBox chkbx_auto_open;
+    
+    @FXML
+    private Label lbl_selected_attendee;
+    
     private ArrayList<AttendeeModel> selectedModels;
     private SimpleTable tableAttendee = new SimpleTable();
     @Override
     protected void setup() {
         this.txt_spacing.setText("10");
         
-        for (int i = 5; i <= 100; i++) {
+        for (int i = 10; i <= 35; i++) {
             this.cmb_font_size.getItems().add(i);
         }
         this.cmb_font_size.getSelectionModel().select(Integer.valueOf(22));
@@ -123,6 +140,7 @@ public class GenerateCertificate extends ApplicationForm {
             Logger.getLogger(GenerateCertificate.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        this.loadText();
         this.eventHandler();
     }
     
@@ -140,6 +158,9 @@ public class GenerateCertificate extends ApplicationForm {
             }
         });
         
+        this.btn_back.setOnMouseClicked((MouseEvent value) -> {
+            this.changeRoot(new SystemHome().load());
+        });
     }
     
     private Integer spaceBefore = 10; 
@@ -152,8 +173,13 @@ public class GenerateCertificate extends ApplicationForm {
                         ctrCount++;
                         if(this.selectedModels.size() == ctrCount) {
                             Platform.runLater(()->{
-                                this.showInformationMessage("Successfully created.", "Certificate successfully created.");
-                                changeRoot(new SystemHome().load());
+                                this.saveText();
+                                if(this.chkbx_auto_open.isSelected()) {
+                                    this.openLastPDFFile();
+                                } else {
+                                    this.showInformationMessage("Successfully created.", "Certificate successfully created.");
+                                    changeRoot(new SystemHome().load());
+                                }
                             });
                         }
                     } else {
@@ -175,7 +201,7 @@ public class GenerateCertificate extends ApplicationForm {
         generateCert.start();
     }
 
-    private static final com.itextpdf.text.Font font7Bold = new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.UNDEFINED, 20, com.itextpdf.text.Font.BOLD);
+    private String lastPDFFile = "";
     //---------------------------------------
     // CERT MAKER
     //---------------------------------------
@@ -224,7 +250,8 @@ public class GenerateCertificate extends ApplicationForm {
             reader = new PdfReader(templateFile.getAbsolutePath());
             Document document = new Document();
             document.setPageSize(reader.getPageSize(1));
-            OutputStream out = new FileOutputStream("certificates" + File.separator  + eachModel.getId() + "_" + eachModel.getFullName(AttendeeModel.NameFormat.SURNAME_FIRST)  + ".pdf");
+            this.lastPDFFile = "certificates" + File.separator  + eachModel.getId() + "_" + eachModel.getFullName(AttendeeModel.NameFormat.SURNAME_FIRST)  + ".pdf";
+            OutputStream out = new FileOutputStream(this.lastPDFFile);
             PdfWriter writer = PdfWriter.getInstance(document, out);
             document.open();
             PdfContentByte cb = writer.getDirectContent();
@@ -233,7 +260,9 @@ public class GenerateCertificate extends ApplicationForm {
             
             cb.addTemplate(page, 0, 0);
             for (int i = 0; i < spaceBefore; i++) {
-                cb.getPdfDocument().add(new Paragraph(" "));
+                Paragraph brk = new Paragraph(5);
+                brk.add(new Chunk(" "));
+                cb.getPdfDocument().add(brk);
             }
             
             Paragraph text = new Paragraph(50);
@@ -276,12 +305,12 @@ public class GenerateCertificate extends ApplicationForm {
         }
         this.lbl_female_count.setText(femaleCount + "");
         this.lbl_male_count.setText(maleCount + "");
-        this.lbl_total_no.setText(content.size() + "");
         
         this.lbl_total_selected.setText(this.selectedModels.size() + "");
         for(AttendeeModel eachModel : this.selectedModels) {
             this.createRow(eachModel);
         }
+        this.lbl_selected_attendee.setText("Selected Attendee" + (this.selectedModels.size()>1? "s" : ""));
         SimpleTableView simpleTableView = new SimpleTableView();
         simpleTableView.setTable(tableAttendee);
         simpleTableView.setFixedWidth(true);
@@ -322,4 +351,42 @@ public class GenerateCertificate extends ApplicationForm {
         this.selectedModels = selectedModels;
     }
     
+    private void loadText() {
+        Properties.instantiate();
+        // set label
+        this.lbl_date.setText(Properties.getProperty("lbl_date"));
+        this.lbl_event_name.setText(Properties.getProperty("lbl_event_name"));
+        this.lbl_venue.setText(Properties.getProperty("lbl_venue"));
+        
+        try {
+            System.out.println(Integer.valueOf(Properties.getProperty("cmb_font_size")));
+            this.cmb_font_size.getSelectionModel().select(Integer.valueOf(Properties.getProperty("cmb_font_size")));
+        } catch (NumberFormatException e) {
+            this.cmb_font_size.getSelectionModel().select(Integer.valueOf(20));
+        }
+        
+        System.out.println(Properties.getProperty("cmb_font_style"));
+        this.cmb_font_style.getSelectionModel().select(Properties.getProperty("cmb_font_style").isEmpty()? "Helvetica" : Properties.getProperty("cmb_font_style"));
+        System.out.println((Properties.getProperty("txt_spacing").isEmpty()? "10" : Properties.getProperty("txt_spacing")));
+        this.txt_spacing.setText((Properties.getProperty("txt_spacing").isEmpty()? "10" : Properties.getProperty("txt_spacing")));
+    }
+    
+    private boolean saveText() {
+        Properties.instantiate();
+        Properties.setProperty("cmb_font_style", this.cmb_font_style.getSelectionModel().getSelectedItem());
+        Properties.setProperty("cmb_font_size", this.cmb_font_size.getSelectionModel().getSelectedItem().toString());
+        Properties.setProperty("txt_spacing", this.txt_spacing.getText().trim());
+        return Properties.saveProperty();
+    }
+    
+    private void openLastPDFFile() {
+        if (Desktop.isDesktopSupported()) {
+            try {
+                File myFile = new File(this.lastPDFFile);
+                Desktop.getDesktop().open(myFile);
+            } catch (IOException ex) {
+                // no application registered for PDFs
+            }
+        }
+    }
 }

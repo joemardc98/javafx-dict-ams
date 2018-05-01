@@ -25,15 +25,20 @@ package gov.dict.ams.ui.home;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
+import gov.dict.ams.Storage;
 import gov.dict.ams.models.AttendeeModel;
+import java.util.ArrayList;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import org.afterschoolcreatives.polaris.javafx.fxml.PolarisFxController;
+import org.afterschoolcreatives.polaris.javafx.scene.control.simpletable.SimpleTable;
 import org.afterschoolcreatives.polaris.javafx.scene.control.simpletable.SimpleTableRow;
 
 /**
@@ -64,7 +69,6 @@ public class AttendeeRow extends PolarisFxController {
     private AttendeeModel content;
     private boolean isChkbxSelected = false;
     private SimpleTableRow row;
-    private JFXButton btn_add_new;
     @Override
     protected void setup() {
         this.lbl_email.setText(content.getEmail()==null? "No Email Address Found" : content.getEmail());
@@ -74,15 +78,23 @@ public class AttendeeRow extends PolarisFxController {
         this.btn_edit.setOnMouseClicked((MouseEvent value)->{
             this.editInfo();
         });
-        this.chkbx_selected.selectedProperty().addListener((a)->{
-            this.isChkbxSelected = this.chkbx_selected.isSelected();
-            if(btn_add_new != null) {
-                this.btn_add_new.setDisable(this.isChkbxSelected);
-            }
+//        this.chkbx_selected.selectedProperty().addListener((a)->{
+//            System.out.println("selectedProperty");
+//            this.isChkbxSelected = this.chkbx_selected.isSelected();
+//            if(btn_add_new != null) {
+//                this.btn_add_new.setDisable(this.isChkbxSelected);
+//            }
+//        });
+        this.chkbx_selected.setOnMouseClicked((a)->{
+            this.isChkbxSelected = chkbx_selected.isSelected();
+            System.out.println("chkbx_selected.setOnMouseClicked setSelected " + isChkbxSelected);
+            this.chkbx_selected.setSelected(isChkbxSelected);
+            this.captureSelectedModel();
         });
         this.row.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                System.out.println("row.setOnMouseClicked");
                 if(event.getButton().equals(MouseButton.PRIMARY)){
                     if(event.getClickCount() == 2){
                         System.out.println("Double clicked");
@@ -101,11 +113,7 @@ public class AttendeeRow extends PolarisFxController {
         edit.setEditMode(content);
         this.changeRoot(edit.load());
     }
-
-    public void setBtn_add_new(JFXButton btn_add_new) {
-        this.btn_add_new = btn_add_new;
-    }
-
+    
     public void setIsChkbxSelected(boolean isChkbxSelected) {
         this.isChkbxSelected = isChkbxSelected;
         this.chkbx_selected.setSelected(isChkbxSelected);
@@ -131,4 +139,36 @@ public class AttendeeRow extends PolarisFxController {
         return btn_edit;
     }
     
+    private ArrayList<AttendeeModel> selectedModel;
+    private SimpleTable tableAttendee = new SimpleTable();
+    private String ROW = "ROW", CONTENT = "CONTENT";
+    private void captureSelectedModel() {
+        System.out.println("CALLED");
+        this.selectedModel.clear();
+        ObservableList<Node> rows = this.tableAttendee.getChildren();
+        for(Node each: rows) {
+            SimpleTableRow row = (SimpleTableRow) each;
+            AttendeeRow eachRow = (AttendeeRow) row.getRowMetaData().get(ROW);
+            AttendeeModel eachModel = (AttendeeModel) row.getRowMetaData().get(CONTENT);
+            if(eachRow.isChkbxSelected()) {
+                this.selectedModel.add(eachModel);
+            }
+        }
+        
+        System.out.println(this.selectedModel.size());
+        
+        Storage.getBtn_add().setDisable(!this.selectedModel.isEmpty());
+        Storage.getBtn_generate().setDisable(this.selectedModel.isEmpty());
+        Storage.getBtn_delete().setDisable(this.selectedModel.isEmpty());
+        Storage.getLbl_total_selected().setText(this.selectedModel.size() + " out of " + this.tableAttendee.getChildren().size());
+        Storage.getChkbx_select_all().setSelected(this.selectedModel.size() == this.tableAttendee.getChildren().size());
+    }
+
+    public void setSelectedModel(ArrayList<AttendeeModel> selectedModel) {
+        this.selectedModel = selectedModel;
+    }
+
+    public void setTableAttendee(SimpleTable tableAttendee) {
+        this.tableAttendee = tableAttendee;
+    }
 }

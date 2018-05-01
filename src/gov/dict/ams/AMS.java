@@ -59,7 +59,7 @@ public class AMS extends Application {
         splashStage.initModality(Modality.APPLICATION_MODAL);
         splashStage.initStyle(StageStyle.UNDECORATED);
         splashStage.setResizable(false);
-        splashStage.getIcons().add(new Image(Context.getResourceStream("drawable/afterschoolcreatives/afterschool-creatives-logo.png")));
+        splashStage.getIcons().add(new Image(Context.getResourceStream("drawable/afterschoolcreatives/ac_monogram"/*afterschool-creatives-logo*/ + ".png")));
         splashStage.setScene(splashScene);
         splashStage.centerOnScreen();
         splashStage.show();
@@ -82,7 +82,7 @@ public class AMS extends Application {
     
     private void showMain(Stage primaryStage) {
         primaryStage.setTitle(Context.APPLICATION_NAME);
-        primaryStage.getIcons().add(new Image(Context.getResourceStream("drawable/afterschoolcreatives/afterschool-creatives-logo.png")));
+        primaryStage.getIcons().add(new Image(Context.getResourceStream("drawable/afterschoolcreatives/ac_monogram"/*afterschool-creatives-logo*/ + ".png")));
         primaryStage.setScene(new Scene(new Login().load()));
         primaryStage.setResizable(true);
         primaryStage.setMaximized(true);

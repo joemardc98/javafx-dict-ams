@@ -179,13 +179,21 @@
                            <HBox.margin>
                               <Insets left="5.0" />
                            </HBox.margin></Label>
-                        <ImageView fitHeight="52.0" fitWidth="181.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="btn_about2" fitHeight="52.0" fitWidth="181.0" pickOnBounds="true" preserveRatio="true">
                            <HBox.margin>
                               <Insets bottom="5.0" right="12.0" />
                            </HBox.margin>
                            <image>
                               <Image url="@../../../../../storage/drawable/afterschoolcreatives/afterschool-creatives-logo_no_bg.png" />
                            </image>
+                        </ImageView>
+                        <ImageView fx:id="btn_about" fitHeight="37.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../storage/drawable/icons8-about-48.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
                         </ImageView>
                      </children>
                      <VBox.margin>

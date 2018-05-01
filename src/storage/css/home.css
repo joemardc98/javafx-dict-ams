@@ -1,12 +1,12 @@
 
 .table-row:hover {
-    -fx-background-color: #9EE1F2
+    -fx-background-color: #99DDFF;
 }
 
 
 .table-row {
-    -fx-border-color: #BFBCBC;
-    -fx-boredr-width: 2;
+    -fx-border-color: #9FCCEF;
+    -fx-boredr-width: 5;
 }
 
 .button:hover {

@@ -165,7 +165,7 @@ public class Settings extends ApplicationForm {
     }
     
     private void loadText() {
-        Properties.instance();
+        Properties.instantiate();
         // set label
         this.lbl_date.setText(Properties.getProperty("lbl_date"));
         this.lbl_event_name.setText(Properties.getProperty("lbl_event_name"));
@@ -177,7 +177,7 @@ public class Settings extends ApplicationForm {
     }
     
     private void saveText() {
-        Properties.instance();
+        Properties.instantiate();
         Properties.setProperty("lbl_date", this.txt_date.getText().trim());
         Properties.setProperty("lbl_event_name", this.txt_event_name.getText().trim());
         Properties.setProperty("lbl_venue", this.txt_venue.getText().trim());
