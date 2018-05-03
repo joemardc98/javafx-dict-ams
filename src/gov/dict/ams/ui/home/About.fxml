@@ -84,7 +84,7 @@
             <Insets bottom="5.0" top="5.0" />
          </padding>
       </HBox>
-      <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+      <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #fff;" VBox.vgrow="ALWAYS">
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                <children>
@@ -95,9 +95,19 @@
                      <children>
                         <VBox prefHeight="506.0" prefWidth="595.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <Label text="FAQs">
+                              <Label text="Attendee Management System (AMS)">
                                  <font>
                                     <Font name="System Bold" size="37.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="10.0" layoutY="10.0" text="FAQs">
+                                 <font>
+                                    <Font name="System Bold" size="29.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="10.0" layoutY="64.0" text="Frequently Asked Questions" textFill="#545353">
+                                 <font>
+                                    <Font name="System Bold" size="22.0" />
                                  </font>
                               </Label>
                               <VBox fx:id="tbl_view" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS" />
@@ -105,81 +115,85 @@
                         </VBox>
                         <VBox alignment="TOP_CENTER" prefHeight="506.0" prefWidth="465.0">
                            <children>
-                              <Label layoutX="157.0" layoutY="104.0" text="About the Developers">
+                              <Label layoutX="157.0" layoutY="104.0" text="About the Developer" textFill="#e94c3d">
                                  <font>
-                                    <Font name="System Bold" size="28.0" />
+                                    <Font name="Century Gothic Bold" size="28.0" />
                                  </font>
                                  <VBox.margin>
                                     <Insets top="30.0" />
                                  </VBox.margin>
                               </Label>
-                              <ImageView fitHeight="74.0" fitWidth="370.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../../../storage/drawable/afterschoolcreatives/afterschool-creatives-logo_no_bg.png" />
-                                 </image>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </ImageView>
-                              <Label layoutX="152.0" layoutY="278.0" text="afterschoolscreatives@gmail.com" textFill="#e94c3d">
-                                 <font>
-                                    <Font size="11.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Jhon Melvin N. Perello">
-                                 <font>
-                                    <Font name="System Bold" size="16.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets top="80.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <Label layoutX="191.0" layoutY="327.0" text="+63995-803-9546">
-                                 <font>
-                                    <Font size="13.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="152.0" layoutY="346.0" text="erickadelacruz2197@gmail.com">
-                                 <font>
-                                    <Font size="13.0" />
-                                 </font>
-                              </Label>
                               <Label layoutX="157.0" layoutY="104.0" text="Joemar N. de la Cruz">
                                  <font>
-                                    <Font name="System Bold" size="16.0" />
+                                    <Font name="Century Gothic Bold" size="16.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="20.0" />
+                                    <Insets top="15.0" />
                                  </VBox.margin>
                               </Label>
                               <Label layoutX="165.0" layoutY="199.0" text="+63975-540-6896">
                                  <font>
-                                    <Font size="13.0" />
+                                    <Font name="Century Gothic" size="13.0" />
                                  </font>
                               </Label>
                               <Label layoutX="191.0" layoutY="249.0" text="joemardc98@gmail.com">
                                  <font>
-                                    <Font size="13.0" />
+                                    <Font name="Century Gothic" size="13.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="165.0" layoutY="129.0" text="Ericka Joy G. dela Cruz">
-                                 <font>
-                                    <Font name="System Bold" size="16.0" />
-                                 </font>
+                              <VBox alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <ImageView fitHeight="74.0" fitWidth="370.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../../../../storage/drawable/afterschoolcreatives/afterschool-creatives-logo_no_bg.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label layoutX="157.0" layoutY="244.0" text="Team" textFill="#e94c3d">
+                                       <font>
+                                          <Font name="Century Gothic Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="Jhon Melvin N. Perello">
+                                       <font>
+                                          <Font name="Century Gothic Bold" size="16.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="20.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label text="+63995-803-9546">
+                                       <font>
+                                          <Font name="Century Gothic" size="13.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="afterschoolcreatives@gmail.com">
+                                       <font>
+                                          <Font name="Century Gothic" size="13.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="Ericka Joy G. dela Cruz">
+                                       <font>
+                                          <Font name="Century Gothic Bold" size="16.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="20.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label text="+63926-170-3113">
+                                       <font>
+                                          <Font name="Century Gothic" size="13.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="erickadelacruz2197@gmail.com">
+                                       <font>
+                                          <Font name="Century Gothic" size="13.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
                                  <VBox.margin>
-                                    <Insets top="20.0" />
+                                    <Insets bottom="30.0" />
                                  </VBox.margin>
-                              </Label>
-                              <Label layoutX="191.0" layoutY="244.0" text="+63926-170-3113">
-                                 <font>
-                                    <Font size="13.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="173.0" layoutY="263.0" text="erickadelacruz2197@gmail.com">
-                                 <font>
-                                    <Font size="13.0" />
-                                 </font>
-                              </Label>
+                              </VBox>
                            </children>
                         </VBox>
                      </children>
@@ -201,11 +215,15 @@
                               <Insets />
                            </HBox.margin>
                         </VBox>
-                        <JFXButton fx:id="btn_view_pdf" prefHeight="39.0" prefWidth="150.0" text="View PDF" textFill="WHITE">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </JFXButton>
+                        <VBox alignment="CENTER_LEFT" prefHeight="39.0" prefWidth="260.0">
+                           <children>
+                              <JFXButton fx:id="btn_view_pdf" prefHeight="39.0" prefWidth="139.0" text="View PDF" textFill="WHITE">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </JFXButton>
+                           </children>
+                        </VBox>
                         <JFXButton fx:id="btn_back" prefHeight="31.0" prefWidth="133.0" text="Home" textFill="WHITE">
                            <font>
                               <Font size="18.0" />

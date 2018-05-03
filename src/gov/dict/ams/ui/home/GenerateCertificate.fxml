@@ -221,7 +221,7 @@
          <children>
             <VBox maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
                <children>
-                  <ImageView fitHeight="81.0" fitWidth="164.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="btn_about" fitHeight="81.0" fitWidth="164.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../../../storage/drawable/afterschoolcreatives/afterschool-creatives-logo_no_bg.png" />
                      </image>

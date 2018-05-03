@@ -55,6 +55,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -116,6 +117,9 @@ public class GenerateCertificate extends ApplicationForm {
     @FXML
     private Label lbl_selected_attendee;
     
+    @FXML
+    private ImageView btn_about;
+    
     private ArrayList<AttendeeModel> selectedModels;
     private SimpleTable tableAttendee = new SimpleTable();
     @Override
@@ -160,6 +164,10 @@ public class GenerateCertificate extends ApplicationForm {
         
         this.btn_back.setOnMouseClicked((MouseEvent value) -> {
             this.changeRoot(new SystemHome().load());
+        });
+        
+        this.btn_about.setOnMouseClicked((MouseEvent value) -> {
+            this.changeRoot(new About().load());
         });
     }
     

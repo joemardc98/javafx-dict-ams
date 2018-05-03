@@ -41,6 +41,7 @@ import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -95,6 +96,9 @@ public class Settings extends ApplicationForm {
     @FXML
     private Label lbl_show_folder;
     
+    @FXML
+    private ImageView btn_about;
+    
     @Override
     protected void setup() {
         this.lbl_show_folder.setVisible(false);
@@ -144,6 +148,9 @@ public class Settings extends ApplicationForm {
         });
         this.lbl_show_folder.setOnMouseClicked((MouseEvent value) -> {
             this.openDirFolder();
+        });
+        this.btn_about.setOnMouseClicked((MouseEvent value) -> {
+            this.changeRoot(new About().load());
         });
     }
     

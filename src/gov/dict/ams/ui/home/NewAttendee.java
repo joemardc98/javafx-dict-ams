@@ -28,8 +28,6 @@ import gov.dict.ams.ApplicationForm;
 import gov.dict.ams.Context;
 import gov.dict.ams.Properties;
 import gov.dict.ams.models.AttendeeModel;
-import java.io.File;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
@@ -39,12 +37,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import org.afterschoolcreatives.polaris.java.sql.ConnectionManager;
-import org.afterschoolcreatives.polaris.java.util.PolarisProperties;
-import org.afterschoolcreatives.polaris.javafx.fxml.PolarisFxController;
-import org.afterschoolcreatives.polaris.javafx.scene.control.PolarisDialog;
 
 /**
  *
@@ -124,6 +120,9 @@ public class NewAttendee  extends ApplicationForm  {
     @FXML
     private Label lbl_suffix;
 
+    @FXML
+    private ImageView btn_about;
+    
     private String mode = "ADD", ADD = "ADD", EDIT = "EDIT";
     @Override
     protected void setup() {
@@ -167,6 +166,9 @@ public class NewAttendee  extends ApplicationForm  {
             this.genderPrevious = (this.rbtn_female.isSelected()? "F" : "M");
             
             this.setEditModePreview();
+        });
+        this.btn_about.setOnMouseClicked((MouseEvent value) -> {
+            this.changeRoot(new About().load());
         });
     }
     
