@@ -120,7 +120,7 @@
                                     <Font name="Century Gothic Bold" size="28.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="30.0" />
+                                    <Insets top="50.0" />
                                  </VBox.margin>
                               </Label>
                               <Label layoutX="157.0" layoutY="104.0" text="Joemar N. de la Cruz">
@@ -215,7 +215,7 @@
                               <Insets />
                            </HBox.margin>
                         </VBox>
-                        <VBox alignment="CENTER_LEFT" prefHeight="39.0" prefWidth="447.0">
+                        <VBox alignment="CENTER_LEFT" prefHeight="39.0" prefWidth="453.0">
                            <children>
                               <JFXButton fx:id="btn_view_pdf" prefHeight="39.0" prefWidth="139.0" text="View PDF" textFill="WHITE">
                                  <font>

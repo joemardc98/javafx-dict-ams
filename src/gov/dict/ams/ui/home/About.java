@@ -83,7 +83,7 @@ public class About extends ApplicationForm {
         this.refreshStatus();
         
         this.btn_view_pdf.setOnMouseClicked((MouseEvent value) -> {
-            this.openDirFolder("src/storage/AMS - FAQs.pdf");
+            this.openDirFolder("AMS - FAQs.pdf");
         });
         this.btn_back.setOnMouseClicked((MouseEvent value) -> {
             this.changeRoot(new SystemHome().load());
@@ -167,7 +167,7 @@ public class About extends ApplicationForm {
                 try {
                     Desktop.getDesktop().open(new File(/*"certificates"*/dir));
                 } catch (Exception e) {
-                    this.showErrorMessage("Failed","The folder is not existing or is empty. Try creating certificates first before opening.");
+                    this.showErrorMessage("Failed","The folder is not existing or is empty.");
                 }
                 suuported = true;
             }
