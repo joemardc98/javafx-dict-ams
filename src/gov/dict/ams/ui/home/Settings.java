@@ -29,11 +29,13 @@ import gov.dict.ams.Properties;
 import gov.dict.ams.models.AttendeeModel;
 import java.awt.Desktop;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -46,10 +48,15 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import org.afterschoolcreatives.polaris.java.io.FileTool;
-import org.afterschoolcreatives.polaris.java.util.PolarisProperties;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import static org.apache.xmlbeans.impl.schema.StscState.end;
+import static org.apache.xmlbeans.impl.schema.StscState.start;
 
 /**
  *
@@ -75,6 +82,9 @@ public class Settings extends ApplicationForm {
     @FXML
     private JFXButton btn_export;
 
+    @FXML
+    private JFXButton btn_import;
+    
     @FXML
     private JFXButton btn_upload;
 
@@ -152,7 +162,170 @@ public class Settings extends ApplicationForm {
         this.btn_about.setOnMouseClicked((MouseEvent value) -> {
             this.changeRoot(new About().load());
         });
+        this.btn_import.setOnMouseClicked((MouseEvent value) -> {
+            try {
+                this.importExcel();
+            } catch (IOException ex) {
+                Logger.getLogger(Settings.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(Settings.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
     }
+    
+    public static String getCellStringValue(HSSFRow row, int cell) {
+        return row.getCell(cell, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue();
+    }
+    
+    private void importExcel() throws IOException, SQLException {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Import the Excel File");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel Files (xlsx and xls)", "*.xlsx", "*.xls");
+        fileChooser.getExtensionFilters().setAll(extFilter);
+        // select
+        File selectedFile = fileChooser.showOpenDialog(this.getStage());
+
+        if (selectedFile == null) {
+            return;
+        }
+        ArrayList<ExcelObject> collection = this.readContent(selectedFile);
+        int added = 0, notAdded = 0, retrieved = 0, notRetrieved = 0;
+        for(ExcelObject obj : collection) {
+            List<AttendeeModel> models = AttendeeModel.getByID(obj.id);
+            if(models.isEmpty()) {
+                AttendeeModel modelNew = new AttendeeModel();
+                modelNew.setActive(1);
+                modelNew.setEmail(obj.email);
+                modelNew.setFirstName(obj.firstName);
+                modelNew.setGender(obj.gender);
+                modelNew.setLastName(obj.lastName);
+                modelNew.setMiddleInitial(obj.middleInitial);
+                modelNew.setSuffix(obj.suffix);
+                if(AttendeeModel.insert(modelNew)) {
+                    added++;
+                } else {
+                    notAdded++;
+                }
+            } else {
+                for(AttendeeModel each : models) {
+                    if(each.getActive().equals(1)) {
+                        continue;
+                    }
+                    each.setActive(1);
+                    if(AttendeeModel.update(each)) {
+                        retrieved++;
+                    } else {
+                        notRetrieved++;
+                    }
+                }
+            }
+        }
+        String msg = added + " record added\n" + 
+                notAdded + " failed\n" +
+                retrieved + " record retrieved\n" +
+                notRetrieved + " failed";
+        this.showInformationMessage("Summary", msg);
+    }
+    
+    public final static int COL_ID = 0;
+    public final static int COL_LAST_NAME = 1;
+    public final static int COL_FIRST_NAME = 2;
+    public final static int COL_MIDDLE_INITIAL = 3;
+    public final static int COL_GENDER = 4;
+    public final static int COL_EMAIL = 5;
+    private ArrayList<ExcelObject> readContent(File excelFile) throws FileNotFoundException, IOException {
+        
+        FileInputStream excelFileStream = null;
+        try {
+            // process excel
+            excelFileStream = new FileInputStream(excelFile);
+            HSSFWorkbook excel = new HSSFWorkbook(excelFileStream);
+            /**
+             * The excel Sheet.
+             */
+            HSSFSheet excelSheet = excel.getSheetAt(0);
+
+            final ArrayList<ExcelObject> excelContents = new ArrayList<>();
+            for (int row = 1; row <= excelSheet.getLastRowNum(); row++) {
+                HSSFRow excelRow = excelSheet.getRow(row);
+                ExcelObject object = new ExcelObject();
+                object.setId(getCellStringValue(excelRow, COL_ID));
+                object.setLastName(getCellStringValue(excelRow, COL_LAST_NAME));
+                object.setFirstName(getCellStringValue(excelRow, COL_FIRST_NAME));
+                object.setMiddleInitial(getCellStringValue(excelRow, COL_MIDDLE_INITIAL));
+                object.setGender(getCellStringValue(excelRow, COL_GENDER));
+                object.setEmail(getCellStringValue(excelRow, COL_EMAIL));
+                excelContents.add(object);
+            }
+
+            return excelContents;
+        } finally {
+            if (excelFileStream != null) {
+                try {
+                    excelFileStream.close();
+                } catch (IOException e) {
+                    // ignore
+                }
+            }
+        }
+    }
+    
+    
+    /**
+     * Excel Object representing the columns of the excel file record.
+     */
+    public static class ExcelObject {
+
+        private String id;
+        private String lastName;
+        private String firstName;
+        private String middleInitial;
+        private String gender;
+        private String email;
+        private String suffix;
+
+        /**
+         * Initialize Strings with empty content.
+         */
+        public ExcelObject() {
+            this.id = "";
+            this.lastName = "";
+            this.firstName = "";
+            this.middleInitial = "";
+            this.gender = "";
+            this.email = "";
+            this.suffix = "";
+        }
+
+        public void setSuffix(String suffix) {
+            this.suffix = suffix;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public void setLastName(String lastName) {
+            this.lastName = lastName;
+        }
+
+        public void setFirstName(String firstName) {
+            this.firstName = firstName;
+        }
+
+        public void setMiddleInitial(String middleInitial) {
+            this.middleInitial = middleInitial;
+        }
+
+        public void setGender(String gender) {
+            this.gender = gender;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+    } // end of excel object.
     
     private void openDirFolder() {
         boolean suuported = false;

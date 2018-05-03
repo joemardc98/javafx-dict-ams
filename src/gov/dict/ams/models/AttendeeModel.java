@@ -158,6 +158,26 @@ public class AttendeeModel extends PolarisRecord {
         }
     }
 
+    public static <T> List<T> getByID(String id) throws SQLException {
+        // Build Query
+        SimpleQuery querySample = new SimpleQuery();
+        querySample.addStatement("SELECT")
+                .addStatement("*")
+                .addStatement("FROM")
+                .addStatement(TABLE)
+                .addStatement("WHERE")
+                .addStatement(ID)
+                .addStatement(" = " + id)
+                .addStatement("AND")
+                .addStatement(ACTIVE)
+                .addStatement(" = 1");
+        
+        // Execute Query
+        try (ConnectionManager con = Context.app().db().createConnectionManager()) {
+            return new AttendeeModel().findMany(con, querySample);
+        }
+    }
+    
     public static boolean insert(AttendeeModel model) throws SQLException {
         try (ConnectionManager con = Context.app().db().createConnectionManager()) {
             return model.insert(con);

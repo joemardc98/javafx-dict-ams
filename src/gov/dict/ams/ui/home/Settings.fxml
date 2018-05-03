@@ -94,33 +94,46 @@
                         <Insets bottom="10.0" left="30.0" right="20.0" top="5.0" />
                      </VBox.margin>
                      <children>
-                        <Label text="Export Database into Excel File">
-                           <font>
-                              <Font name="System Bold" size="29.0" />
-                           </font>
-                        </Label>
-                        <HBox>
+                        <VBox>
                            <children>
-                              <Label prefHeight="27.0" prefWidth="604.0" text="All the saved attendee will be exported into an excel file for the future use.">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="lbl_show_folder" prefHeight="27.0" prefWidth="229.0" text="Show selected folder? Click here." textFill="#301ecd">
+                              <HBox alignment="BOTTOM_LEFT">
+                                 <children>
+                                    <Label prefHeight="43.0" prefWidth="395.0" text="Export or Import Excel File">
+                                       <font>
+                                          <Font name="System Bold" size="29.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="lbl_show_folder" prefHeight="27.0" prefWidth="229.0" text="Show selected folder? Click here." textFill="#301ecd">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <Label maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="644.0" text="In Export, all the saved attendee will be exported into an excel file while the Import, the exported file will be saved in the computer as backup." VBox.vgrow="ALWAYS">
                                  <font>
                                     <Font size="15.0" />
                                  </font>
                               </Label>
+                              <HBox spacing="20.0">
+                                 <VBox.margin>
+                                    <Insets left="30.0" top="10.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <JFXButton fx:id="btn_export" prefHeight="44.0" prefWidth="286.0" text="Export to Excel File" textFill="WHITE">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </JFXButton>
+                                    <JFXButton fx:id="btn_import" layoutX="10.0" layoutY="10.0" prefHeight="44.0" prefWidth="286.0" text="Import the Excel File" textFill="WHITE">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </JFXButton>
+                                 </children>
+                              </HBox>
                            </children>
-                        </HBox>
-                        <JFXButton fx:id="btn_export" prefHeight="44.0" prefWidth="286.0" text="Export to Excel" textFill="WHITE">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets left="30.0" top="10.0" />
-                           </VBox.margin>
-                        </JFXButton>
+                        </VBox>
                         <Label layoutX="10.0" layoutY="10.0" text="Upload a Certificate Template">
                            <font>
                               <Font name="System Bold" size="29.0" />
@@ -131,7 +144,7 @@
                         </Label>
                         <Label layoutX="10.0" layoutY="53.0" text="A template is a must to make the system more useful, a file with an extension name of .pdf is required.">
                            <font>
-                              <Font size="18.0" />
+                              <Font size="15.0" />
                            </font>
                         </Label>
                         <JFXButton fx:id="btn_upload" layoutX="40.0" layoutY="100.0" prefHeight="44.0" prefWidth="286.0" text="Upload a Template" textFill="WHITE">
