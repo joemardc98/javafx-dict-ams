@@ -3,6 +3,7 @@ package gov.dict.ams.ui.home;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
+import gov.dict.ams.AMS;
 import gov.dict.ams.ApplicationForm;
 import gov.dict.ams.Context;
 import gov.dict.ams.Properties;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -332,8 +334,10 @@ public class SystemHome extends ApplicationForm {
             List<AttendeeModel> content = AttendeeModel.listAllActive(genderSelected);
             this.createTable(content);
         } catch (SQLException ex) {
+            this.showExceptionMessage(ex, "SQL Exception", "The application will automatically close after this message.");
+            Platform.exit(); // exit java fx
             Logger.getLogger(SystemHome.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } 
     }
     
     private void captureSelectedModel() {

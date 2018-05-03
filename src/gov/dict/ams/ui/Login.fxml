@@ -2,10 +2,12 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXProgressBar?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -38,25 +40,68 @@
                   <Font name="Century Gothic" size="18.0" />
                </font>
                <VBox.margin>
-                  <Insets bottom="70.0" top="20.0" />
+                  <Insets bottom="60.0" top="20.0" />
                </VBox.margin>
             </Label>
-            <JFXButton fx:id="btn_login" prefHeight="48.0" prefWidth="245.0" style="-fx-background-color: #028AF8;" text="Continue" textFill="WHITE">
-               <font>
-                  <Font size="22.0" />
-               </font>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </JFXButton>
-            <JFXButton fx:id="btn_sample" layoutX="601.0" layoutY="311.0" prefHeight="48.0" prefWidth="244.0" style="-fx-background-color: #FB6851;" text="Close" textFill="WHITE">
-               <font>
-                  <Font size="22.0" />
-               </font>
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-            </JFXButton>
+            <StackPane>
+               <children>
+                  <VBox fx:id="vbox_home" alignment="TOP_CENTER" visible="false">
+                     <children>
+                        <JFXButton fx:id="btn_continue" prefHeight="48.0" prefWidth="245.0" style="-fx-background-color: #028AF8;" text="Continue" textFill="WHITE">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton fx:id="btn_change_ip" prefHeight="13.0" prefWidth="244.0" style="-fx-background-color: #4172AA;" text="Change Server IP" textFill="WHITE">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </JFXButton>
+                        <JFXButton fx:id="btn_close" prefHeight="48.0" prefWidth="244.0" style="-fx-background-color: #FB6851;" text="Close" textFill="WHITE">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </JFXButton>
+                     </children>
+                  </VBox>
+                  <VBox fx:id="vbox_change_server_ip" alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0">
+                     <children>
+                        <Label text="Please enter the server's ip:">
+                           <font>
+                              <Font name="Century Gothic" size="16.0" />
+                           </font>
+                        </Label>
+                        <JFXTextField fx:id="txt_server_ip" alignment="CENTER" maxWidth="-Infinity" prefHeight="25.0" prefWidth="245.0">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="25.0" />
+                           </font>
+                        </JFXTextField>
+                        <JFXButton fx:id="btn_save_changes" prefHeight="48.0" prefWidth="245.0" style="-fx-background-color: #028AF8;" text="Save Changes" textFill="WHITE">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton fx:id="btn_cancel" prefHeight="13.0" prefWidth="244.0" style="-fx-background-color: #4172AA;" text="Cancel" textFill="WHITE">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </JFXButton>
+                     </children>
+                  </VBox>
+               </children>
+            </StackPane>
             <JFXProgressBar fx:id="prgbr_loading" prefHeight="4.0" prefWidth="242.0">
                <VBox.margin>
                   <Insets top="10.0" />
@@ -68,7 +113,7 @@
                   <Image url="@../../../../storage/drawable/afterschoolcreatives/afterschool-creatives-logo_no_bg.png" />
                </image>
                <VBox.margin>
-                  <Insets />
+                  <Insets bottom="10.0" />
                </VBox.margin>
             </ImageView>
          </children>

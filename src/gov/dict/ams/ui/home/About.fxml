@@ -215,7 +215,7 @@
                               <Insets />
                            </HBox.margin>
                         </VBox>
-                        <VBox alignment="CENTER_LEFT" prefHeight="39.0" prefWidth="260.0">
+                        <VBox alignment="CENTER_LEFT" prefHeight="39.0" prefWidth="447.0">
                            <children>
                               <JFXButton fx:id="btn_view_pdf" prefHeight="39.0" prefWidth="139.0" text="View PDF" textFill="WHITE">
                                  <font>

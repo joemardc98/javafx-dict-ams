@@ -42,7 +42,7 @@ public class Context {
     // Application Specific Constant (These values are visible across)
     public final static String APPLICATION_NAME = "Attendee Management System";
     public final static int VERSION_CODE = 0;
-    public final static String VERSION_NAME = "1.0.2-prototype-system";
+    public final static String VERSION_NAME = "1.0.3";
 
     /**
      * Get Resources from the storage directory.
@@ -96,7 +96,9 @@ public class Context {
     private Context() {
         logger.trace("Application Instance Created");
         // set values
-        this.host = "127.0.0.1";
+        Properties.instantiate();
+        String hostIP = Properties.getProperty("host");
+        this.host = (hostIP.isEmpty()? "127.0.0.1" : hostIP);
         this.databaseName = "ams";
         this.databasePort = "3306";
         this.databaseUser = "root";
