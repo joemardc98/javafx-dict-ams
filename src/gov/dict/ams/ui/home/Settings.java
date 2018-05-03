@@ -233,7 +233,7 @@ public class Settings extends ApplicationForm {
             }
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd_hh_mm_ss");
-            String filePath = selectedDirectory.getAbsolutePath() + "\\" + sdf.format(new Date()) + ".xls";
+            String filePath = selectedDirectory.getAbsolutePath() + "\\AMS_" + sdf.format(new Date()) + "_EXPORTED.xls";
             
             FileOutputStream fileOut = new FileOutputStream(filePath);
             workbook.write(fileOut);

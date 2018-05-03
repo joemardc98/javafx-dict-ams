@@ -113,9 +113,9 @@
                               <VBox fx:id="tbl_view" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS" />
                            </children>
                         </VBox>
-                        <VBox alignment="TOP_CENTER" prefHeight="506.0" prefWidth="465.0">
+                        <VBox alignment="CENTER" prefHeight="506.0" prefWidth="465.0">
                            <children>
-                              <Label layoutX="157.0" layoutY="104.0" text="About the Developer" textFill="#e94c3d">
+                              <Label text="About the Developer" textFill="#e94c3d">
                                  <font>
                                     <Font name="Century Gothic Bold" size="28.0" />
                                  </font>
@@ -123,7 +123,7 @@
                                     <Insets top="50.0" />
                                  </VBox.margin>
                               </Label>
-                              <Label layoutX="157.0" layoutY="104.0" text="Joemar N. de la Cruz">
+                              <Label text="Joemar N. de la Cruz">
                                  <font>
                                     <Font name="Century Gothic Bold" size="16.0" />
                                  </font>
@@ -131,69 +131,65 @@
                                     <Insets top="15.0" />
                                  </VBox.margin>
                               </Label>
-                              <Label layoutX="165.0" layoutY="199.0" text="+63975-540-6896">
+                              <Label text="+63975-540-6896">
                                  <font>
                                     <Font name="Century Gothic" size="13.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="191.0" layoutY="249.0" text="joemardc98@gmail.com">
+                              <Label text="joemardc98@gmail.com">
                                  <font>
                                     <Font name="Century Gothic" size="13.0" />
                                  </font>
                               </Label>
-                              <VBox alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
-                                 <children>
-                                    <ImageView fitHeight="74.0" fitWidth="370.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../../../../storage/drawable/afterschoolcreatives/afterschool-creatives-logo_no_bg.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Label layoutX="157.0" layoutY="244.0" text="Team" textFill="#e94c3d">
-                                       <font>
-                                          <Font name="Century Gothic Bold" size="16.0" />
-                                       </font>
-                                    </Label>
-                                    <Label text="Jhon Melvin N. Perello">
-                                       <font>
-                                          <Font name="Century Gothic Bold" size="16.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets top="20.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                    <Label text="+63995-803-9546">
-                                       <font>
-                                          <Font name="Century Gothic" size="13.0" />
-                                       </font>
-                                    </Label>
-                                    <Label text="afterschoolcreatives@gmail.com">
-                                       <font>
-                                          <Font name="Century Gothic" size="13.0" />
-                                       </font>
-                                    </Label>
-                                    <Label text="Ericka Joy G. dela Cruz">
-                                       <font>
-                                          <Font name="Century Gothic Bold" size="16.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets top="20.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                    <Label text="+63926-170-3113">
-                                       <font>
-                                          <Font name="Century Gothic" size="13.0" />
-                                       </font>
-                                    </Label>
-                                    <Label text="erickadelacruz2197@gmail.com">
-                                       <font>
-                                          <Font name="Century Gothic" size="13.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
+                              <ImageView fitHeight="74.0" fitWidth="370.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../../../storage/drawable/afterschoolcreatives/afterschool-creatives-logo_no_bg.png" />
+                                 </image>
                                  <VBox.margin>
-                                    <Insets bottom="30.0" />
+                                    <Insets top="70.0" />
                                  </VBox.margin>
-                              </VBox>
+                              </ImageView>
+                              <Label text="Team" textFill="#e94c3d">
+                                 <font>
+                                    <Font name="Century Gothic Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Jhon Melvin N. Perello">
+                                 <font>
+                                    <Font name="Century Gothic Bold" size="16.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="20.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label text="+63995-803-9546">
+                                 <font>
+                                    <Font name="Century Gothic" size="13.0" />
+                                 </font>
+                              </Label>
+                              <Label text="afterschoolcreatives@gmail.com">
+                                 <font>
+                                    <Font name="Century Gothic" size="13.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Ericka Joy G. dela Cruz">
+                                 <font>
+                                    <Font name="Century Gothic Bold" size="16.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="20.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label text="+63926-170-3113">
+                                 <font>
+                                    <Font name="Century Gothic" size="13.0" />
+                                 </font>
+                              </Label>
+                              <Label text="erickadelacruz2197@gmail.com">
+                                 <font>
+                                    <Font name="Century Gothic" size="13.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </VBox>
                      </children>

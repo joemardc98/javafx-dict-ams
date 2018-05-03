@@ -91,7 +91,7 @@ public class About extends ApplicationForm {
     }
     
     private void createTable() {
-        for (int i = 1; i <= 13; i++) {
+        for (int i = 1; i <= 15; i++) {
             System.out.println("image" + i + ".PNG");
             double height = 0.0;
             switch(i) {
@@ -134,6 +134,12 @@ public class About extends ApplicationForm {
                 case 13:
                     height = 222.0;
                     break;
+                case 14:
+                    height = 310.0;
+                    break;
+                case 15:
+                    height = 224.0;
+                    break;
             }
             this.createRow("image" + i + ".PNG", (height));
         }
@@ -167,7 +173,7 @@ public class About extends ApplicationForm {
                 try {
                     Desktop.getDesktop().open(new File(/*"certificates"*/dir));
                 } catch (Exception e) {
-                    this.showErrorMessage("Failed","The folder is not existing or is empty.");
+                    this.showErrorMessage("Failed","The cannot find the AMS - FAQs file.");
                 }
                 suuported = true;
             }

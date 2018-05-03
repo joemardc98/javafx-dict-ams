@@ -177,7 +177,7 @@ public class NewAttendee  extends ApplicationForm  {
             suffixPrevious = "";
     private void setEditModePreview() {
         mode = EDIT;
-        this.lbl_title_add.setText("Edit the selected attendee's information here.");
+        this.lbl_title_add.setText("Edit the attendee's information");
         this.lbl_email_add.setText(this.model.getEmail().isEmpty()? DEFAULT_EMAIL_ADD : this.model.getEmail());
         this.lbl_first_name.setText(this.model.getFirstName());
         this.lbl_gender.setText(this.model.getGender().equalsIgnoreCase("F")? "Female" : "Male");

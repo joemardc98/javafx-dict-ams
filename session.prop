@@ -1,8 +1,8 @@
-#Thu May 03 10:30:46 IRKT 2018
+#Thu May 03 14:13:45 IRKT 2018
 cmb_font_size=25
 lbl_venue=
 lbl_event_name=
 txt_spacing=36
 cmb_font_style=Helvetica
-host=100.0.0.1
+host=127.0.0.1
 lbl_date=

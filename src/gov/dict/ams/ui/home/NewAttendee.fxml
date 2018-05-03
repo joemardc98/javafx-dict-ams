@@ -97,7 +97,7 @@
                      <children>
                         <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <VBox maxWidth="1.7976931348623157E308" prefHeight="176.0" prefWidth="513.0" VBox.vgrow="ALWAYS">
+                              <VBox maxWidth="1.7976931348623157E308" prefHeight="5.0" prefWidth="477.0">
                                  <children>
                                     <Label fx:id="lbl_title_add" text="Add New Attendee">
                                        <font>
@@ -111,7 +111,7 @@
                                     </Label>
                                  </children>
                               </VBox>
-                              <VBox prefHeight="470.0" prefWidth="349.0" spacing="10.0">
+                              <VBox prefHeight="470.0" prefWidth="349.0" spacing="10.0" VBox.vgrow="ALWAYS">
                                  <children>
                                     <HBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="1160.0" spacing="5.0">
                                        <children>
@@ -200,7 +200,7 @@
                                                 <Insets />
                                              </HBox.margin>
                                           </RadioButton>
-                                          <RadioButton fx:id="rbtn_female" mnemonicParsing="false" text="Female">
+                                          <RadioButton fx:id="rbtn_female" minWidth="-Infinity" mnemonicParsing="false" text="Female">
                                              <font>
                                                 <Font size="20.0" />
                                              </font>
@@ -224,7 +224,7 @@
                                           <Insets right="15.0" />
                                        </VBox.margin>
                                     </HBox>
-                                    <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                                    <HBox alignment="CENTER_LEFT" spacing="10.0">
                                        <children>
                                           <JFXButton fx:id="btn_add" prefHeight="39.0" prefWidth="229.0" text="Submit" textFill="WHITE">
                                              <font>
@@ -252,7 +252,7 @@
                               <Insets left="10.0" />
                            </HBox.margin>
                         </VBox>
-                        <VBox fx:id="vbox_newly_added" style="-fx-border-color: #BFBCBC; -fx-border-width: 3;">
+                        <VBox fx:id="vbox_newly_added" prefHeight="501.0" prefWidth="672.0" style="-fx-border-color: #BFBCBC; -fx-border-width: 3;">
                            <children>
                               <Label text="Information Preview">
                                  <font>
