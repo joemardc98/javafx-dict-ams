@@ -27,6 +27,7 @@ import com.jfoenix.controls.JFXButton;
 import gov.dict.ams.ApplicationForm;
 import gov.dict.ams.Properties;
 import gov.dict.ams.models.AttendeeModel;
+import gov.dict.ams.models.AttendeeModel.Gender;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
@@ -194,22 +195,22 @@ public class Settings extends ApplicationForm {
             System.out.println("ID " + obj.id);
             List<AttendeeModel> models = AttendeeModel.getByID(obj.id);
             if(models.isEmpty()) {
-                System.out.println("NO ID FOUND");
+                System.out.println("NO FOUND");
                 AttendeeModel modelNew = new AttendeeModel();
                 modelNew.setActive(1);
-                modelNew.setEmail(obj.email);
-                modelNew.setFirstName(obj.firstName);
-                modelNew.setGender(obj.gender);
-                modelNew.setLastName(obj.lastName);
-                modelNew.setMiddleInitial(obj.middleInitial);
-                modelNew.setSuffix(obj.suffix);
+                modelNew.setEmail(obj.email.toLowerCase().trim());
+                modelNew.setFirstName(obj.firstName.toUpperCase().trim());
+                modelNew.setGender((obj.gender.trim().equalsIgnoreCase(Gender.FEMALE) || obj.gender.equalsIgnoreCase("F")? "F" : "M"));
+                modelNew.setLastName(obj.lastName.toUpperCase().trim());
+                modelNew.setMiddleInitial(obj.middleInitial.toUpperCase().trim());
+                modelNew.setSuffix(obj.suffix.toUpperCase().trim());
                 if(AttendeeModel.insert(modelNew)) {
                     added++;
                 } else {
                     notAdded++;
                 }
             } else {
-                System.out.println("AN EXISTING IS FOUND");
+                System.out.println("ID IS EXISTING");
                 for(AttendeeModel each : models) {
                     if(!each.getActive().equals(1)) {
                         each.setActive(1);
