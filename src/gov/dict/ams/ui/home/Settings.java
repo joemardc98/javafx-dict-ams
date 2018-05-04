@@ -191,8 +191,10 @@ public class Settings extends ApplicationForm {
         ArrayList<ExcelObject> collection = this.readContent(selectedFile);
         int added = 0, notAdded = 0, retrieved = 0, notRetrieved = 0;
         for(ExcelObject obj : collection) {
+            System.out.println("ID " + obj.id);
             List<AttendeeModel> models = AttendeeModel.getByID(obj.id);
             if(models.isEmpty()) {
+                System.out.println("NO ID FOUND");
                 AttendeeModel modelNew = new AttendeeModel();
                 modelNew.setActive(1);
                 modelNew.setEmail(obj.email);
@@ -207,23 +209,23 @@ public class Settings extends ApplicationForm {
                     notAdded++;
                 }
             } else {
+                System.out.println("AN EXISTING IS FOUND");
                 for(AttendeeModel each : models) {
-                    if(each.getActive().equals(1)) {
-                        continue;
-                    }
-                    each.setActive(1);
-                    if(AttendeeModel.update(each)) {
-                        retrieved++;
-                    } else {
-                        notRetrieved++;
+                    if(!each.getActive().equals(1)) {
+                        each.setActive(1);
+                        if(AttendeeModel.update(each)) {
+                            retrieved++;
+                        } else {
+                            notRetrieved++;
+                        }
                     }
                 }
             }
         }
         String msg = added + " record added\n" + 
-                notAdded + " failed\n" +
+                notAdded + " failed in add\n" +
                 retrieved + " record retrieved\n" +
-                notRetrieved + " failed";
+                notRetrieved + " failed in retrieve";
         this.showInformationMessage("Summary", msg);
     }
     

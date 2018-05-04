@@ -91,54 +91,60 @@ public class About extends ApplicationForm {
     }
     
     private void createTable() {
-        for (int i = 1; i <= 15; i++) {
+        for (int i = 1; i <= 17; i++) {
             System.out.println("image" + i + ".PNG");
             double height = 0.0;
             switch(i) {
                 case 1:
-                    height = 108.0;
+                    height = 194.0;
                     break;
                 case 2:
-                    height = 327.0;
+                    height = 475.0;
                     break;
                 case 3:
-                    height = 196.0;
+                    height = 349.0;
                     break;
                 case 4:
-                    height = 134.0;
+                    height = 237.0;
                     break;
                 case 5:
-                    height = 401.0;
+                    height = 525.0;
                     break;
                 case 6:
-                    height = 318.0;
+                    height = 294.0;
                     break;
                 case 7:
-                    height = 222.0;
+                    height = 209.0;
                     break;
                 case 8:
-                    height = 95.0;
+                    height = 617.0;
                     break;
                 case 9:
-                    height = 98.0;
+                    height = 511.0;
                     break;
                 case 10:
-                    height = 241.0;
+                    height = 402.0;
                     break;
                 case 11:
-                    height = 122.0;
+                    height = 165.0;
                     break;
                 case 12:
-                    height = 203.0;
+                    height = 166.0;
                     break;
                 case 13:
-                    height = 222.0;
+                    height = 439.0;
                     break;
                 case 14:
-                    height = 310.0;
+                    height = 206.0;
                     break;
                 case 15:
-                    height = 224.0;
+                    height = 230.0;
+                    break;
+                case 16:
+                    height = 338.0;
+                    break;
+                case 17:
+                    height = 459.0;
                     break;
             }
             this.createRow("image" + i + ".PNG", (height));

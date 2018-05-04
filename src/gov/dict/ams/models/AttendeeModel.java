@@ -167,10 +167,7 @@ public class AttendeeModel extends PolarisRecord {
                 .addStatement(TABLE)
                 .addStatement("WHERE")
                 .addStatement(ID)
-                .addStatement(" = " + id)
-                .addStatement("AND")
-                .addStatement(ACTIVE)
-                .addStatement(" = 1");
+                .addStatement(" = " + Integer.valueOf(id));
         
         // Execute Query
         try (ConnectionManager con = Context.app().db().createConnectionManager()) {

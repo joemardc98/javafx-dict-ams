@@ -110,7 +110,7 @@
                                     </Label>
                                  </children>
                               </HBox>
-                              <Label maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="644.0" text="In Export, all the saved attendee will be exported into an excel file while the Import, the exported file will be saved in the computer as backup." VBox.vgrow="ALWAYS">
+                              <Label maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="644.0" text="In Export, all the saved attendee will be exported into an excel file while the Import, the exported file will be retrieved in the computer." VBox.vgrow="ALWAYS">
                                  <font>
                                     <Font size="15.0" />
                                  </font>
