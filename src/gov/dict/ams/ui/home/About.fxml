@@ -131,6 +131,11 @@
                                     <Insets top="15.0" />
                                  </VBox.margin>
                               </Label>
+                              <Label layoutX="100.0" layoutY="322.0" text="https://www.facebook.com/joemardc98" textFill="#171717">
+                                 <font>
+                                    <Font name="Century Gothic" size="12.0" />
+                                 </font>
+                              </Label>
                               <Label text="+63975-540-6896">
                                  <font>
                                     <Font name="Century Gothic" size="13.0" />
@@ -149,6 +154,11 @@
                                     <Insets top="70.0" />
                                  </VBox.margin>
                               </ImageView>
+                              <Label layoutX="221.0" layoutY="330.0" text="https://www.facebook.com/afterschoolcreatives" textFill="#e94c3d">
+                                 <font>
+                                    <Font name="Century Gothic Bold" size="12.0" />
+                                 </font>
+                              </Label>
                               <Label text="Team" textFill="#e94c3d">
                                  <font>
                                     <Font name="Century Gothic Bold" size="16.0" />
