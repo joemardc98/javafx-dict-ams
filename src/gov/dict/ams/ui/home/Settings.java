@@ -53,11 +53,6 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import static org.apache.xmlbeans.impl.schema.StscState.end;
-import static org.apache.xmlbeans.impl.schema.StscState.start;
 
 /**
  *
@@ -175,7 +170,11 @@ public class Settings extends ApplicationForm {
     }
     
     public static String getCellStringValue(HSSFRow row, int cell) {
-        return row.getCell(cell, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue();
+        try {
+            return row.getCell(cell, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue();
+        } catch (java.lang.NullPointerException e) {
+            return "";
+        }
     }
     
     private void importExcel() throws IOException, SQLException {
@@ -193,8 +192,12 @@ public class Settings extends ApplicationForm {
         int added = 0, notAdded = 0, retrieved = 0, notRetrieved = 0;
         for(ExcelObject obj : collection) {
             System.out.println("ID " + obj.id);
-            List<AttendeeModel> models = AttendeeModel.getByID(obj.id);
-            if(models.isEmpty()) {
+            List<AttendeeModel> models = null;  
+            try {
+                models = AttendeeModel.getByID(Integer.valueOf(obj.id));
+            } catch (java.lang.NumberFormatException e) {
+            }
+            if(models == null || models.isEmpty()) {
                 System.out.println("NO FOUND");
                 AttendeeModel modelNew = new AttendeeModel();
                 modelNew.setActive(1);
@@ -234,8 +237,9 @@ public class Settings extends ApplicationForm {
     public final static int COL_LAST_NAME = 1;
     public final static int COL_FIRST_NAME = 2;
     public final static int COL_MIDDLE_INITIAL = 3;
-    public final static int COL_GENDER = 4;
-    public final static int COL_EMAIL = 5;
+    public final static int COL_SUFFIX= 4;
+    public final static int COL_GENDER = 5;
+    public final static int COL_EMAIL = 6;
     private ArrayList<ExcelObject> readContent(File excelFile) throws FileNotFoundException, IOException {
         
         FileInputStream excelFileStream = null;
@@ -249,16 +253,20 @@ public class Settings extends ApplicationForm {
             HSSFSheet excelSheet = excel.getSheetAt(0);
 
             final ArrayList<ExcelObject> excelContents = new ArrayList<>();
+            System.out.println("excelSheet.getLastRowNum() " + excelSheet.getLastRowNum());
             for (int row = 1; row <= excelSheet.getLastRowNum(); row++) {
                 HSSFRow excelRow = excelSheet.getRow(row);
-                ExcelObject object = new ExcelObject();
-                object.setId(getCellStringValue(excelRow, COL_ID));
-                object.setLastName(getCellStringValue(excelRow, COL_LAST_NAME));
-                object.setFirstName(getCellStringValue(excelRow, COL_FIRST_NAME));
-                object.setMiddleInitial(getCellStringValue(excelRow, COL_MIDDLE_INITIAL));
-                object.setGender(getCellStringValue(excelRow, COL_GENDER));
-                object.setEmail(getCellStringValue(excelRow, COL_EMAIL));
-                excelContents.add(object);
+                if(!getCellStringValue(excelRow, COL_LAST_NAME).trim().isEmpty() && !getCellStringValue(excelRow, COL_FIRST_NAME).trim().isEmpty()) {
+                    ExcelObject object = new ExcelObject();
+                    object.setId(getCellStringValue(excelRow, COL_ID));
+                    object.setLastName(getCellStringValue(excelRow, COL_LAST_NAME));
+                    object.setFirstName(getCellStringValue(excelRow, COL_FIRST_NAME));
+                    object.setMiddleInitial(getCellStringValue(excelRow, COL_MIDDLE_INITIAL));
+                    object.setSuffix(getCellStringValue(excelRow, COL_SUFFIX));
+                    object.setGender(getCellStringValue(excelRow, COL_GENDER));
+                    object.setEmail(getCellStringValue(excelRow, COL_EMAIL));
+                    excelContents.add(object);
+                }
             }
 
             return excelContents;
@@ -389,9 +397,10 @@ public class Settings extends ApplicationForm {
         rowhead.createCell((short) 0).setCellValue("ID");
         rowhead.createCell((short) 1).setCellValue("Last Name".toUpperCase());
         rowhead.createCell((short) 2).setCellValue("First Name".toUpperCase());
-        rowhead.createCell((short) 3).setCellValue("Middle Initial".toUpperCase());
-        rowhead.createCell((short) 4).setCellValue("Gender".toUpperCase());
-        rowhead.createCell((short) 5).setCellValue("Email Address".toUpperCase());
+        rowhead.createCell((short) 3).setCellValue("MI".toUpperCase());
+        rowhead.createCell((short) 4).setCellValue("Suffix".toUpperCase());
+        rowhead.createCell((short) 5).setCellValue("Gender".toUpperCase());
+        rowhead.createCell((short) 6).setCellValue("Email Address".toUpperCase());
 
         try {
             List<AttendeeModel> content = AttendeeModel.listAllActive(null);
@@ -399,12 +408,13 @@ public class Settings extends ApplicationForm {
             for(AttendeeModel eachModel: content) {
                 // create row
                 HSSFRow row = sheet.createRow((short) ctrRow);
-                row.createCell((short) 0).setCellValue(eachModel.getId() + "");
-                row.createCell((short) 1).setCellValue(eachModel.getLastName());
-                row.createCell((short) 2).setCellValue(eachModel.getFirstName());
-                row.createCell((short) 3).setCellValue((eachModel.getMiddleInitial().isEmpty()? "N/A" : eachModel.getMiddleInitial()));
-                row.createCell((short) 4).setCellValue(eachModel.getGender());
-                row.createCell((short) 5).setCellValue((eachModel.getEmail().isEmpty()? "NONE" : eachModel.getEmail()));
+                row.createCell((short) COL_ID).setCellValue(eachModel.getId() + "");
+                row.createCell((short) COL_LAST_NAME).setCellValue(eachModel.getLastName());
+                row.createCell((short) COL_FIRST_NAME).setCellValue(eachModel.getFirstName());
+                row.createCell((short) COL_MIDDLE_INITIAL).setCellValue((eachModel.getMiddleInitial().isEmpty()? "N/A" : eachModel.getMiddleInitial()));
+                row.createCell((short) COL_SUFFIX).setCellValue(eachModel.getSuffix());
+                row.createCell((short) COL_GENDER).setCellValue(eachModel.getGender());
+                row.createCell((short) COL_EMAIL).setCellValue((eachModel.getEmail().trim().isEmpty()? "NONE" : eachModel.getEmail()));
                 ctrRow++;
             }
 

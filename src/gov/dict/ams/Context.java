@@ -102,7 +102,7 @@ public class Context {
         this.databaseName = "ams";
         this.databasePort = "3306";
         this.databaseUser = "root";
-        this.databasePass = "root";
+        this.databasePass = "dictlc2";
         // initialization
         this.createConnectionFactory();
         logger.trace("Application Initialization Completed");

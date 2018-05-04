@@ -158,7 +158,7 @@ public class AttendeeModel extends PolarisRecord {
         }
     }
 
-    public static <T> List<T> getByID(String id) throws SQLException {
+    public static <T> List<T> getByID(Integer id) throws SQLException {
         // Build Query
         SimpleQuery querySample = new SimpleQuery();
         querySample.addStatement("SELECT")
@@ -167,7 +167,7 @@ public class AttendeeModel extends PolarisRecord {
                 .addStatement(TABLE)
                 .addStatement("WHERE")
                 .addStatement(ID)
-                .addStatement(" = " + Integer.valueOf(id));
+                .addStatement(" = " + id);
         
         // Execute Query
         try (ConnectionManager con = Context.app().db().createConnectionManager()) {
